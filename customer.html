@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+        (function() {
+        emailjs.init("mwto7zhpi_SgOqY_9"); // Email.js public key
+        })();
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shri Balaji Mini Transport - Booking Form</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #0061fe;
+            --secondary-color: #1e1919;
+            --bg-color: #ffffff;
+            --card-bg: #ffffff;
+            --text-color: #1e1919;
+            --border-color: #e6e8eb;
+            --success-color: #007046;
+            --warning-color: #ff9800;
+            --danger-color: #e82c4c;
+            --info-color: #0061fe;
+            --light-bg: #f7f9fa;
+            --hover-color: #f0f5fe;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-icon {
+            background-color: var(--primary-color);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-right: 15px;
+        }
+
+        .logo-text h1 {
+            font-size: 22px;
+            margin-bottom: 5px;
+        }
+
+        .logo-text p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .contact-item i {
+            margin-right: 8px;
+            color: var(--primary-color);
+        }
+
+        .main-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .main-title h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .main-title p {
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .step-indicator::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--border-color);
+            z-index: 0;
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-number {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: white;
+            border: 3px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .step.active .step-number {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+
+        .step-label {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .step.active .step-label {
+            color: var(--primary-color);
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .card-title {
+            font-size: 20px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .form-title {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .form-subtitle {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .vehicle-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .vehicle-card {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .vehicle-card:hover {
+            border-color: var(--primary-color);
+            background-color: var(--hover-color);
+        }
+
+        .vehicle-card.selected {
+            border-color: var(--primary-color);
+            background-color: var(--hover-color);
+        }
+
+        .vehicle-icon {
+            font-size: 30px;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .capacity-options {
+            display: none;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .material-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .calculation-box {
+            background-color: var(--light-bg);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .calculation-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px dashed var(--border-color);
+        }
+
+        .calculation-row:last-child {
+            border-bottom: none;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .payment-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .button {
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .button-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .button-primary:hover {
+            background-color: #0051d6;
+        }
+
+        .button-secondary {
+            background-color: var(--light-bg);
+            color: var(--text-color);
+        }
+
+        .button-secondary:hover {
+            background-color: var(--border-color);
+        }
+
+        .step-content {
+            display: none;
+        }
+
+        .step-content.active {
+            display: block;
+        }
+
+        .confirmation-box {
+            text-align: center;
+            padding: 30px 0;
+        }
+
+        .success-icon {
+            font-size: 60px;
+            color: var(--success-color);
+            margin-bottom: 20px;
+        }
+
+        .confirmation-title {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .confirmation-message {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .shipment-details {
+            background-color: var(--light-bg);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .detail-row {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .detail-label {
+            width: 150px;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+
+            .button-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-truck"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>Shri Balaji Mini Transport</h1>
+                    <p>Owned by Marri Yadaiah</p>
+                </div>
+            </div>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    +91 7989531138
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    v9898476@gmail.com
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    Hayathnagar, Hyderabad
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Title -->
+        <div class="main-title">
+            <h2>Book Your Transport Service</h2>
+            <p>Fill in the details below to request a transport service. Our team will process your request promptly.</p>
+        </div>
+
+        <!-- Step Indicator -->
+        <div class="step-indicator">
+            <div class="step active" data-step="1">
+                <div class="step-number">1</div>
+                <div class="step-label">Vehicle</div>
+            </div>
+            <div class="step" data-step="2">
+                <div class="step-number">2</div>
+                <div class="step-label">Route & Cargo</div>
+            </div>
+            <div class="step" data-step="3">
+                <div class="step-number">3</div>
+                <div class="step-label">Details</div>
+            </div>
+            <div class="step" data-step="4">
+                <div class="step-number">4</div>
+                <div class="step-label">Payment</div>
+            </div>
+            <div class="step" data-step="5">
+                <div class="step-number">5</div>
+                <div class="step-label">Confirmation</div>
+            </div>
+        </div>
+
+        <!-- Main Form Card -->
+        <div class="card">
+            <!-- Step 1: Vehicle Selection -->
+            <div class="step-content active" id="step-1">
+                <h3 class="card-title">Select Vehicle Type</h3>
+                
+                <div class="form-section">
+                    <h4 class="form-title">Vehicle Type</h4>
+                    <p class="form-subtitle">Choose the type of vehicle that suits your transportation needs</p>
+                    
+                    <div class="vehicle-cards">
+                        <div class="vehicle-card" onclick="selectVehicle(this, 'LCV', 30000)">
+                            <div class="vehicle-icon"><i class="fas fa-truck"></i></div>
+                            <h4>LCV</h4>
+                            <p>Light Commercial Vehicles</p>
+                            <p><strong>₹30,000</strong></p>
+                        </div>
+                        <div class="vehicle-card" onclick="selectVehicle(this, 'HCV', 50000)">
+                            <div class="vehicle-icon"><i class="fas fa-truck-moving"></i></div>
+                            <h4>HCV</h4>
+                            <p>Heavy Commercial Vehicles</p>
+                            <p><strong>₹50,000</strong></p>
+                        </div>
+                        <div class="vehicle-card" onclick="selectVehicle(this, 'container', 70000)">
+                            <div class="vehicle-icon"><i class="fas fa-shipping-fast"></i></div>
+                            <h4>Containers</h4>
+                            <p>Standard Containers</p>
+                            <p><strong>₹70,000</strong></p>
+                        </div>
+                        <div class="vehicle-card" onclick="selectVehicle(this, 'ODC', 85000)">
+                            <div class="vehicle-icon"><i class="fas fa-truck-loading"></i></div>
+                            <h4>ODC</h4>
+                            <p>Over Dimension Carriers</p>
+                            <p><strong>₹85,000</strong></p>
+                        </div>
+                        <div class="vehicle-card" onclick="selectVehicle(this, 'trailer', 90000)">
+                            <div class="vehicle-icon"><i class="fas fa-trailer"></i></div>
+                            <h4>Trailers</h4>
+                            <p>For heavy equipment</p>
+                            <p><strong>₹90,000</strong></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="capacity-options" id="capacity-options">
+                    <h4 class="form-title">Vehicle Capacity</h4>
+                    <p class="form-subtitle">Select the capacity that meets your requirements</p>
+                    
+                    <div class="vehicle-cards">
+                        <div class="vehicle-card" onclick="selectCapacity(this, 25)">
+                            <h4>25 Tons</h4>
+                        </div>
+                        <div class="vehicle-card" onclick="selectCapacity(this, 50)">
+                            <h4>50 Tons</h4>
+                        </div>
+                        <div class="vehicle-card" onclick="selectCapacity(this, 75)">
+                            <h4>75 Tons</h4>
+                        </div>
+                        <div class="vehicle-card" onclick="selectCapacity(this, 100)">
+                            <h4>100 Tons</h4>
+                        </div>
+                    </div>
+                </div>
+                
+                <input type="hidden" id="selectedVehicle" name="vehicleType">
+                <input type="hidden" id="selectedCapacity" name="vehicleCapacity">
+                <input type="hidden" id="basePrice" name="basePrice">
+                
+                <div class="button-container">
+                    <div></div> <!-- Empty div for spacing -->
+                    <button class="button button-primary" onclick="nextStep()">Continue <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+            
+            <!-- Step 2: Route & Cargo -->
+            <div class="step-content" id="step-2">
+                <h3 class="card-title">Route & Cargo Details</h3>
+                
+                <div class="form-section">
+                    <h4 class="form-title">Route Information</h4>
+                    <p class="form-subtitle">Enter pickup and delivery locations</p>
+                    
+                    <div class="form-group">
+                        <label for="fromAddress">Pickup Address</label>
+                        <input type="text" class="form-control" id="fromAddress" placeholder="Enter complete pickup address">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="toAddress">Delivery Address</label>
+                        <input type="text" class="form-control" id="toAddress" placeholder="Enter complete delivery address">
+                    </div>
+                    
+                    <div>
+                        <button class="button button-secondary" onclick="calculateDistance()">Calculate Distance & Price</button>
+                    </div>
+                </div>
+                
+                <div class="calculation-box" id="distanceResult" style="display: none;">
+                    <div class="calculation-row">
+                        <div>Estimated Distance:</div>
+                        <div id="distanceValue">0 km</div>
+                    </div>
+                    <div class="calculation-row">
+                        <div>Base Vehicle Price:</div>
+                        <div id="basePriceValue">₹0</div>
+                    </div>
+                    <div class="calculation-row">
+                        <div>Distance Cost (₹200 per km):</div>
+                        <div id="distanceCost">₹0</div>
+                    </div>
+                    <div class="calculation-row">
+                        <div>Total Price:</div>
+                        <div id="totalPrice" class="total">₹0</div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h4 class="form-title">Cargo Information</h4>
+                    <p class="form-subtitle">Select the type of material that needs to be transported</p>
+                    
+                    <div class="material-options">
+                        <div class="vehicle-card" onclick="selectMaterial(this, 'agriculture')">
+                            <div class="vehicle-icon"><i class="fas fa-seedling"></i></div>
+                            <h4>Agriculture Goods</h4>
+                        </div>
+                        <div class="vehicle-card" onclick="selectMaterial(this, 'spareparts')">
+                            <div class="vehicle-icon"><i class="fas fa-cogs"></i></div>
+                            <h4>Spare Parts</h4>
+                        </div>
+                        <div class="vehicle-card" onclick="selectMaterial(this, 'machinery')">
+                            <div class="vehicle-icon"><i class="fas fa-wrench"></i></div>
+                            <h4>Machinery</h4>
+                        </div>
+                        <div class="vehicle-card" onclick="selectMaterial(this, 'chemicals')">
+                            <div class="vehicle-icon"><i class="fas fa-flask"></i></div>
+                            <h4>Chemicals</h4>
+                        </div>
+                        <div class="vehicle-card" onclick="selectMaterial(this, 'construction')">
+                            <div class="vehicle-icon"><i class="fas fa-hard-hat"></i></div>
+                            <h4>Construction Material</h4>
+                        </div>
+                    </div>
+                </div>
+                
+                <input type="hidden" id="selectedMaterial" name="materialType">
+                <input type="hidden" id="calculatedDistance" name="distance">
+                <input type="hidden" id="calculatedPrice" name="totalPrice">
+                
+                <div class="button-container">
+                    <button class="button button-secondary" onclick="prevStep()"><i class="fas fa-arrow-left"></i> Back</button>
+                    <button class="button button-primary" onclick="nextStep()">Continue <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+            
+            <!-- Step 3: Customer Details -->
+            <div class="step-content" id="step-3">
+                <h3 class="card-title">Customer Information</h3>
+                
+                <div class="form-section">
+                    <p class="form-subtitle">Provide your contact details for order confirmation and updates</p>
+                    
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label for="customerName">Full Name</label>
+                            <input type="text" class="form-control" id="customerName" placeholder="Enter your full name">
+                        </div>
+                        <div class="form-group">
+                            <label for="customerPhone">Phone Number</label>
+                            <input type="tel" class="form-control" id="customerPhone" placeholder="Enter your phone number">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="customerEmail">Email Address</label>
+                        <input type="email" class="form-control" id="customerEmail" placeholder="Enter your email address">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="companyName">Company Name (Optional)</label>
+                        <input type="text" class="form-control" id="companyName" placeholder="Enter your company name if applicable">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="deliveryDate">Required Delivery Date</label>
+                        <input type="date" class="form-control" id="deliveryDate">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="specialInstructions">Special Instructions (Optional)</label>
+                        <textarea class="form-control" id="specialInstructions" rows="3" placeholder="Any specific requirements or information we should know"></textarea>
+                    </div>
+                </div>
+                
+                <div class="button-container">
+                    <button class="button button-secondary" onclick="prevStep()"><i class="fas fa-arrow-left"></i> Back</button>
+                    <button class="button button-primary" onclick="nextStep()">Continue <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+            
+            <!-- Step 4: Payment Options -->
+            <div class="step-content" id="step-4">
+                <h3 class="card-title">Payment Options</h3>
+                
+                <div class="form-section">
+                    <h4 class="form-title">Payment Status</h4>
+                    <p class="form-subtitle">Choose your preferred payment option</p>
+                    
+                    <div class="payment-options">
+                        <div class="vehicle-card" onclick="selectPayment(this, 'to-pay')">
+                            <div class="vehicle-icon"><i class="fas fa-money-bill-wave"></i></div>
+                            <h4>To Pay</h4>
+                            <p>Pay on delivery</p>
+                        </div>
+                        <div class="vehicle-card" onclick="selectPayment(this, 'paid')">
+                            <div class="vehicle-icon"><i class="fas fa-check-circle"></i></div>
+                            <h4>Paid</h4>
+                            <p>Pay now</p>
+                        </div>
+                        <div class="vehicle-card" onclick="selectPayment(this, 'credit')">
+                            <div class="vehicle-icon"><i class="fas fa-credit-card"></i></div>
+                            <h4>Credit</h4>
+                            <p>Pay later</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section" id="paymentMethodSection" style="display: none;">
+                    <h4 class="form-title">Payment Method</h4>
+                    <p class="form-subtitle">Choose your preferred payment method</p>
+                    
+                    <div class="payment-options">
+                        <div class="vehicle-card" onclick="selectPaymentMethod(this, 'cash')">
+                            <div class="vehicle-icon"><i class="fas fa-money-bill-wave"></i></div>
+                            <h4>Cash</h4>
+                            <p>Pay on delivery</p>
+                        </div>
+                        <div class="vehicle-card" onclick="selectPaymentMethod(this, 'card')">
+                            <div class="vehicle-icon"><i class="fas fa-credit-card"></i></div>
+                            <h4>Card</h4>
+                            <p>Credit/Debit Card</p>
+                        </div>
+                        <div class="vehicle-card" onclick="selectPaymentMethod(this, 'banking')">
+                            <div class="vehicle-icon"><i class="fas fa-university"></i></div>
+                            <h4>Net Banking</h4>
+                            <p>Bank transfer</p>
+                        </div>
+                        <div class="vehicle-card" onclick="selectPaymentMethod(this, 'upi')">
+                            <div class="vehicle-icon"><i class="fas fa-qrcode"></i></div>
+                            <h4>UPI</h4>
+                            <p>UPI payment</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Card Details Form (initially hidden) -->
+                <div id="cardDetailsForm" class="form-section" style="display: none;">
+                    <h4 class="form-title">Card Details</h4>
+                    <div class="form-group">
+                        <label for="cardNumber">Card Number</label>
+                        <input type="text" class="form-control" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19">
+                    </div>
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label for="cardExpiry">Expiry Date (MM/YY)</label>
+                            <input type="text" class="form-control" id="cardExpiry" placeholder="MM/YY" maxlength="5">
+                        </div>
+                        <div class="form-group">
+                            <label for="cardCvv">CVV</label>
+                            <input type="password" class="form-control" id="cardCvv" placeholder="***" maxlength="3">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="cardName">Name on Card</label>
+                        <input type="text" class="form-control" id="cardName" placeholder="Cardholder Name">
+                    </div>
+                </div>
+                
+                <!-- Banking Details Form (initially hidden) -->
+                <div id="bankingDetailsForm" class="form-section" style="display: none;">
+                    <h4 class="form-title">Net Banking Details</h4>
+                    <div class="form-group">
+                        <label for="bankName">Select Bank</label>
+                        <select class="form-control" id="bankName">
+                            <option value="">Select your bank</option>
+                            <option value="sbi">State Bank of India</option>
+                            <option value="hdfc">HDFC Bank</option>
+                            <option value="icici">ICICI Bank</option>
+                            <option value="axis">Axis Bank</option>
+                            <option value="pnb">Punjab National Bank</option>
+                            <option value="other">Other Bank</option>
+                        </select>
+                    </div>
+                    <div id="otherBankField" class="form-group" style="display: none;">
+                        <label for="otherBankName">Bank Name</label>
+                        <input type="text" class="form-control" id="otherBankName" placeholder="Enter your bank name">
+                    </div>
+                    <div class="form-group">
+                        <label for="accountNumber">Account Number</label>
+                        <input type="text" class="form-control" id="accountNumber" placeholder="Enter your account number">
+                    </div>
+                    <div class="form-group">
+                        <label for="ifscCode">IFSC Code</label>
+                        <input type="text" class="form-control" id="ifscCode" placeholder="Enter IFSC code">
+                    </div>
+                </div>
+                
+                <!-- UPI Details Form (initially hidden) -->
+                <div id="upiDetailsForm" class="form-section" style="display: none;">
+                    <h4 class="form-title">UPI Details</h4>
+                    <div class="form-group">
+                        <label for="upiId">UPI ID</label>
+                        <input type="text" class="form-control" id="upiId" placeholder="yourname@upi">
+                    </div>
+                </div>
+                
+                <input type="hidden" id="selectedPayment" name="paymentStatus">
+                <input type="hidden" id="selectedPaymentMethod" name="paymentMethod">
+                
+                <div class="calculation-box">
+                    <h4>Order Summary</h4>
+                    <div class="calculation-row">
+                        <div>Vehicle Type:</div>
+                        <div id="summaryVehicle">Not selected</div>
+                    </div>
+                    <div class="calculation-row">
+                        <div>Vehicle Capacity:</div>
+                        <div id="summaryCapacity">Not selected</div>
+                    </div>
+                    <div class="calculation-row">
+                        <div>Material Type:</div>
+                        <div id="summaryMaterial">Not selected</div>
+                    </div>
+                    <div class="calculation-row">
+                        <div>Distance:</div>
+                        <div id="summaryDistance">0 km</div>
+                    </div>
+                    <div class="calculation-row">
+                        <div>Base Price:</div>
+                        <div id="summaryBasePrice">₹0</div>
+                    </div>
+                    <div class="calculation-row">
+                        <div>Distance Cost:</div>
+                        <div id="summaryDistanceCost">₹0</div>
+                    </div>
+                    <div class="calculation-row">
+                        <div>Total Price:</div>
+                        <div id="summaryTotalPrice" class="total">₹0</div>
+                    </div>
+                </div>
+                
+                <div class="button-container">
+                    <button class="button button-secondary" onclick="prevStep()"><i class="fas fa-arrow-left"></i> Back</button>
+                    <button class="button button-primary" onclick="submitOrder()">Submit Order <i class="fas fa-check"></i></button>
+                </div>
+            </div>
+            
+            <!-- Step 5: Confirmation -->
+            <div class="step-content" id="step-5">
+                <div class="confirmation-box">
+                    <div class="success-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h3 class="confirmation-title">Order Submitted Successfully!</h3>
+                    <p class="confirmation-message">Your transport request has been sent to our team for processing.</p>
+                    
+                    <div class="shipment-details">
+                        <h3>Shipment Details</h3>
+                        <div class="detail-row">
+                            <div class="detail-label">Shipment ID:</div>
+                            <div id="shipmentId">SBT-2025-00123</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Order Date:</div>
+                            <div id="orderDate"></div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Vehicle Type:</div>
+                            <div id="confirmVehicle"></div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">From:</div>
+                            <div id="confirmFrom"></div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">To:</div>
+                            <div id="confirmTo"></div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Material:</div>
+                            <div id="confirmMaterial"></div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Total Amount:</div>
+                            <div id="confirmAmount"></div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Payment Status:</div>
+                            <div id="confirmPayment"></div>
+                        </div>
+                    </div>
+                    
+                    <p>A confirmation email has been sent to <span id="confirmEmail"></span></p>
+                    <p>You can track your shipment status using the Shipment ID above.</p>
+                    
+                    <div style="margin-top: 30px;">
+                        <button class="button button-primary" onclick="printOrderDetails()">Print Details</button>
+                        <button class="button button-secondary" onclick="trackOrder()">Track Order</button>
+                        <a href="index.html" class="button button-secondary">Return to Home</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentStep = 1;
+        let basePrice = 0;
+        let distanceCost = 0;
+        let totalPrice = 0;
+        let commission = 0; // Hidden commission (2% of total order)
+        
+        console.log('Script is running successfully');
+        
+        // Step navigation
+        function nextStep() {
+            console.log('Next step from', currentStep);
+            
+            // Validate current step
+            if (!validateStep(currentStep)) {
+                return;
+            }
+            
+            // Update step UI
+            document.querySelector(`.step[data-step="${currentStep}"]`).classList.remove('active');
+            document.getElementById(`step-${currentStep}`).classList.remove('active');
+            
+            // Move to next step
+            currentStep++;
+            
+            // Show next step
+            document.querySelector(`.step[data-step="${currentStep}"]`).classList.add('active');
+            document.getElementById(`step-${currentStep}`).classList.add('active');
+            
+            // Update summary in step 4
+            if (currentStep === 4) {
+                updateOrderSummary();
+            }
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+        
+        function prevStep() {
+            console.log('Previous step from', currentStep);
+            
+            // Update step UI
+            document.querySelector(`.step[data-step="${currentStep}"]`).classList.remove('active');
+            document.getElementById(`step-${currentStep}`).classList.remove('active');
+            
+            // Move to previous step
+            currentStep--;
+            
+            // Show previous step
+            document.querySelector(`.step[data-step="${currentStep}"]`).classList.add('active');
+            document.getElementById(`step-${currentStep}`).classList.add('active');
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+        
+        // Validate each step
+        function validateStep(step) {
+            console.log('Validating step', step);
+            
+            switch(step) {
+                case 1:
+                    // Validate vehicle selection
+                    const selectedVehicle = document.getElementById('selectedVehicle').value;
+                    const selectedCapacity = document.getElementById('selectedCapacity').value;
+                    
+                    if (!selectedVehicle) {
+                        alert('Please select a vehicle type');
+                        return false;
+                    }
+                    if (!selectedCapacity) {
+                        alert('Please select a vehicle capacity');
+                        return false;
+                    }
+                    
+                    return true;
+                    
+                case 2:
+                    // Validate route and cargo
+                    const fromAddress = document.getElementById('fromAddress').value;
+                    const toAddress = document.getElementById('toAddress').value;
+                    const selectedMaterial = document.getElementById('selectedMaterial').value;
+                    const calculatedPrice = document.getElementById('calculatedPrice').value;
+                    
+                    if (!fromAddress) {
+                        alert('Please enter a pickup address');
+                        return false;
+                    }
+                    
+                    if (!toAddress) {
+                        alert('Please enter a delivery address');
+                        return false;
+                    }
+                    
+                    if (!selectedMaterial) {
+                        alert('Please select a material type');
+                        return false;
+                    }
+                    
+                    if (!calculatedPrice || calculatedPrice === '0') {
+                        alert('Please calculate the distance and price');
+                        return false;
+                    }
+                    
+                    return true;
+                    
+                case 3:
+                    // Validate customer details
+                    const customerName = document.getElementById('customerName').value;
+                    const customerPhone = document.getElementById('customerPhone').value;
+                    const customerEmail = document.getElementById('customerEmail').value;
+                    const deliveryDate = document.getElementById('deliveryDate').value;
+                    
+                    if (!customerName) {
+                        alert('Please enter your full name');
+                        return false;
+                    }
+                    
+                    if (!customerPhone) {
+                        alert('Please enter your phone number');
+                        return false;
+                    }
+                    
+                    if (!customerEmail) {
+                        alert('Please enter your email address');
+                        return false;
+                    }
+                    
+                    if (!deliveryDate) {
+                        alert('Please select a required delivery date');
+                        return false;
+                    }
+                    
+                    return true;
+                    
+                case 4:
+                    // Validate payment options
+                    const selectedPayment = document.getElementById('selectedPayment').value;
+                    
+                    if (!selectedPayment) {
+                        alert('Please select a payment status');
+                        return false;
+                    }
+                    
+                    // If payment status is "paid", validate payment method
+                    if (selectedPayment === 'paid') {
+                        const selectedPaymentMethod = document.getElementById('selectedPaymentMethod').value;
+                        
+                        if (!selectedPaymentMethod) {
+                            alert('Please select a payment method');
+                            return false;
+                        }
+                        
+                        // Validate specific payment method details
+                        if (selectedPaymentMethod === 'card') {
+                            const cardNumber = document.getElementById('cardNumber').value;
+                            const cardExpiry = document.getElementById('cardExpiry').value;
+                            const cardCvv = document.getElementById('cardCvv').value;
+                            const cardName = document.getElementById('cardName').value;
+                            
+                            if (!cardNumber || !cardExpiry || !cardCvv || !cardName) {
+                                alert('Please fill in all card details');
+                                return false;
+                            }
+                        } else if (selectedPaymentMethod === 'banking') {
+                            const bankName = document.getElementById('bankName').value;
+                            
+                            if (!bankName) {
+                                alert('Please select a bank');
+                                return false;
+                            }
+                            
+                            if (bankName === 'other') {
+                                const otherBankName = document.getElementById('otherBankName').value;
+                                
+                                if (!otherBankName) {
+                                    alert('Please enter your bank name');
+                                    return false;
+                                }
+                            }
+                        } else if (selectedPaymentMethod === 'upi') {
+                            const upiId = document.getElementById('upiId').value;
+                            
+                            if (!upiId) {
+                                alert('Please enter your UPI ID');
+                                return false;
+                            }
+                        }
+                    }
+                    
+                    return true;
+            }
+            
+            return true;
+        }
+        
+        // Vehicle selection
+        function selectVehicle(element, vehicleType, price) {
+            console.log('Vehicle selected:', vehicleType, 'Price:', price);
+            
+            // Remove selection from all vehicle options
+            const vehicleCards = document.querySelectorAll('.vehicle-cards .vehicle-card');
+            vehicleCards.forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Add selection to clicked vehicle
+            element.classList.add('selected');
+            
+            // Store selected vehicle and price
+            document.getElementById('selectedVehicle').value = vehicleType;
+            document.getElementById('basePrice').value = price;
+            basePrice = price;
+            
+            // Show capacity options
+            document.getElementById('capacity-options').style.display = 'block';
+        }
+        
+        function selectCapacity(element, capacity) {
+            console.log('Capacity selected:', capacity);
+            
+            // Remove selection from all capacity options
+            const capacityCards = document.querySelectorAll('#capacity-options .vehicle-card');
+            capacityCards.forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Add selection to clicked capacity
+            element.classList.add('selected');
+            
+            // Store selected capacity
+            document.getElementById('selectedCapacity').value = capacity;
+        }
+        
+        // Material selection
+        function selectMaterial(element, materialType) {
+            console.log('Material selected:', materialType);
+            
+            // Remove selection from all material options
+            const materialCards = document.querySelectorAll('.material-options .vehicle-card');
+            materialCards.forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Add selection to clicked material
+            element.classList.add('selected');
+            
+            // Store selected material
+            document.getElementById('selectedMaterial').value = materialType;
+        }
+        
+        // Payment selection
+        function selectPayment(element, paymentType) {
+            console.log('Payment selected:', paymentType);
+            
+            // Remove selection from all payment options
+            const paymentCards = document.querySelectorAll('.payment-options .vehicle-card');
+            paymentCards.forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Add selection to clicked payment
+            element.classList.add('selected');
+            
+            // Store selected payment
+            document.getElementById('selectedPayment').value = paymentType;
+            
+            // Show or hide payment method section based on payment type
+            if (paymentType === 'paid') {
+                document.getElementById('paymentMethodSection').style.display = 'block';
+            } else {
+                document.getElementById('paymentMethodSection').style.display = 'none';
+                document.getElementById('cardDetailsForm').style.display = 'none';
+                document.getElementById('bankingDetailsForm').style.display = 'none';
+                document.getElementById('upiDetailsForm').style.display = 'none';
+                document.getElementById('selectedPaymentMethod').value = '';
+            }
+        }
+        
+        // Payment method selection
+        function selectPaymentMethod(element, methodType) {
+            console.log('Payment method selected:', methodType);
+            
+            // Remove selection from all payment method options
+            const paymentMethodCards = document.querySelectorAll('#paymentMethodSection .vehicle-card');
+            paymentMethodCards.forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Add selection to clicked method
+            element.classList.add('selected');
+            
+            // Store selected payment method
+            document.getElementById('selectedPaymentMethod').value = methodType;
+            
+            // Hide all payment detail forms first
+            document.getElementById('cardDetailsForm').style.display = 'none';
+            document.getElementById('bankingDetailsForm').style.display = 'none';
+            document.getElementById('upiDetailsForm').style.display = 'none';
+            
+            // Show the appropriate payment details form based on selection
+            if (methodType === 'card') {
+                document.getElementById('cardDetailsForm').style.display = 'block';
+            } else if (methodType === 'banking') {
+                document.getElementById('bankingDetailsForm').style.display = 'block';
+            } else if (methodType === 'upi') {
+                document.getElementById('upiDetailsForm').style.display = 'block';
+            }
+        }
+        
+        // Calculate distance and price
+        function calculateDistance() {
+            console.log('Calculating distance and price');
+            
+            const fromAddress = document.getElementById('fromAddress').value;
+            const toAddress = document.getElementById('toAddress').value;
+            
+            if (!fromAddress || !toAddress) {
+                alert('Please enter both pickup and delivery addresses');
+                return;
+            }
+            
+            // In a real application, you would use Google Maps or a similar API to calculate distance
+            // For demo purposes, we'll use a random distance between 10-500 km
+            const distance = Math.floor(Math.random() * 491) + 10; // Random distance between 10-500 km
+            
+            // Calculate distance cost (₹200 per km)
+            distanceCost = Math.ceil(distance * 200);
+            
+            // Calculate total price
+            totalPrice = basePrice + distanceCost;
+            
+            // Calculate commission (2% of total, not shown to customer)
+            commission = totalPrice * 0.02;
+            
+            // Display results
+            document.getElementById('distanceValue').textContent = distance + ' km';
+            document.getElementById('basePriceValue').textContent = '₹' + basePrice.toLocaleString();
+            document.getElementById('distanceCost').textContent = '₹' + distanceCost.toLocaleString();
+            document.getElementById('totalPrice').textContent = '₹' + totalPrice.toLocaleString();
+            
+            // Store calculated values
+            document.getElementById('calculatedDistance').value = distance;
+            document.getElementById('calculatedPrice').value = totalPrice;
+            
+            // Show distance result
+            document.getElementById('distanceResult').style.display = 'block';
+        }
+        
+        // Update order summary
+        function updateOrderSummary() {
+            console.log('Updating order summary');
+            
+            const vehicleType = document.getElementById('selectedVehicle').value;
+            const capacity = document.getElementById('selectedCapacity').value;
+            const material = document.getElementById('selectedMaterial').value;
+            const distance = document.getElementById('calculatedDistance').value;
+            
+            document.getElementById('summaryVehicle').textContent = vehicleType || 'Not selected';
+            document.getElementById('summaryCapacity').textContent = capacity ? capacity + ' Tons' : 'Not selected';
+            document.getElementById('summaryMaterial').textContent = material || 'Not selected';
+            document.getElementById('summaryDistance').textContent = distance ? distance + ' km' : '0 km';
+            document.getElementById('summaryBasePrice').textContent = '₹' + basePrice.toLocaleString();
+            document.getElementById('summaryDistanceCost').textContent = '₹' + distanceCost.toLocaleString();
+            document.getElementById('summaryTotalPrice').textContent = '₹' + totalPrice.toLocaleString();
+        }
+        
+        // Submit order
+        function submitOrder() {
+            console.log('Submitting order');
+            
+            // Validate step 4
+            if (!validateStep(4)) {
+                return;
+            }
+            
+            // Generate a random shipment ID
+            const shipmentId = 'SBT-2025-' + Math.floor(Math.random() * 90000 + 10000);
+            
+            // Get current date
+            const currentDate = new Date();
+            const formattedDate = currentDate.toLocaleDateString('en-IN', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric'
+            });
+            
+            // Get order details
+            const vehicleType = document.getElementById('selectedVehicle').value;
+            const vehicleCapacity = document.getElementById('selectedCapacity').value;
+            const fromAddress = document.getElementById('fromAddress').value;
+            const toAddress = document.getElementById('toAddress').value;
+            const materialType = document.getElementById('selectedMaterial').value;
+            const customerName = document.getElementById('customerName').value;
+            const customerPhone = document.getElementById('customerPhone').value;
+            const customerEmail = document.getElementById('customerEmail').value;
+            const companyName = document.getElementById('companyName').value || '';
+            const deliveryDate = document.getElementById('deliveryDate').value;
+            const specialInstructions = document.getElementById('specialInstructions').value || '';
+            const paymentStatus = document.getElementById('selectedPayment').value;
+            const paymentMethod = document.getElementById('selectedPaymentMethod').value || '';
+            
+            // Create order object
+            const orderData = {
+                shipmentId,
+                orderDate: formattedDate,
+                vehicleType,
+                vehicleCapacity,
+                fromAddress,
+                toAddress,
+                materialType,
+                customerName,
+                customerPhone,
+                customerEmail,
+                companyName,
+                deliveryDate,
+                specialInstructions,
+                paymentStatus,
+                paymentMethod,
+                amount: totalPrice,
+                status: 'Pending',
+                timestamp: new Date().getTime() // For sorting
+            };
+            
+            console.log('Order data:', orderData);
+            
+            // Save to localStorage
+            // Get existing orders or initialize empty array
+            let orders = JSON.parse(localStorage.getItem('transportOrders') || '[]');
+            // Add new order
+            orders.push(orderData);
+            // Save back to localStorage
+            localStorage.setItem('transportOrders', JSON.stringify(orders));
+            
+            console.log('Order saved to localStorage');
+            
+            // Set confirmation details
+            document.getElementById('shipmentId').textContent = shipmentId;
+            document.getElementById('orderDate').textContent = formattedDate;
+            document.getElementById('confirmVehicle').textContent = vehicleType + ' (' + vehicleCapacity + ' Tons)';
+            document.getElementById('confirmFrom').textContent = fromAddress;
+            document.getElementById('confirmTo').textContent = toAddress;
+            document.getElementById('confirmMaterial').textContent = materialType;
+            document.getElementById('confirmAmount').textContent = '₹' + totalPrice.toLocaleString();
+            document.getElementById('confirmEmail').textContent = customerEmail;
+            document.getElementById('confirmPayment').textContent = getPaymentText(paymentStatus);
+            
+            // Move to confirmation step
+            document.querySelector(`.step[data-step="${currentStep}"]`).classList.remove('active');
+            document.getElementById(`step-${currentStep}`).classList.remove('active');
+            
+            currentStep++;
+            
+            document.querySelector(`.step[data-step="${currentStep}"]`).classList.add('active');
+            document.getElementById(`step-${currentStep}`).classList.add('active');
+            
+            // Send confirmation email
+            sendEmailConfirmation(orderData);
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+        
+        function getPaymentText(paymentStatus) {
+            switch(paymentStatus) {
+                case 'to-pay':
+                    return 'To Pay (Cash on Delivery)';
+                case 'paid':
+                    return 'Paid';
+                case 'credit':
+                    return 'Credit (Payment Pending)';
+                default:
+                    return paymentStatus;
+            }
+        }
+        
+        function getPaymentMethodText(paymentMethod) {
+            switch(paymentMethod) {
+                case 'cash':
+                    return 'Cash';
+                case 'card':
+                    return 'Credit/Debit Card';
+                case 'banking':
+                    return 'Net Banking';
+                case 'upi':
+                    return 'UPI';
+                default:
+                    return paymentMethod || 'Not specified';
+            }
+        }
+        
+        // Print order details
+        function printOrderDetails() {
+            window.print();
+        }
+        
+        function trackOrder() {
+            const shipmentId = document.getElementById('shipmentId').textContent;
+            alert(`You can track your order ${shipmentId} by contacting our customer service at +91 7989531138`);
+        }
+        
+        // Function to send email confirmation to customer
+        function sendEmailConfirmation(orderData) {
+    console.log('Sending email confirmation to', orderData.customerEmail);
+    
+    // Show loading indicator
+    const emailSendingIndicator = document.createElement('div');
+    emailSendingIndicator.innerHTML = '<p style="margin-top: 15px;"><i class="fas fa-spinner fa-spin"></i> Sending confirmation email...</p>';
+    document.querySelector('.confirmation-box').appendChild(emailSendingIndicator);
+    
+    // Create simpler template params with only the essential data
+    const templateParams = {
+        to_name: orderData.customerName,
+        to_email: orderData.customerEmail,
+        shipment_id: orderData.shipmentId,
+        vehicle_type: `${orderData.vehicleType} (${orderData.vehicleCapacity} Tons)`,
+        from_address: orderData.fromAddress,
+        to_address: orderData.toAddress,
+        total_amount: '₹' + orderData.amount.toLocaleString(),
+        payment_status: getPaymentText(orderData.paymentStatus)
+    };
+    
+    // Send with error handling
+    emailjs.send(
+        'service_u6mj8xx',
+        'template_ktvo94p',
+        templateParams
+    )
+    .then(function(response) {
+        console.log('Email sent successfully!', response);
+        emailSendingIndicator.remove();
+        
+        const emailSentIndicator = document.createElement('div');
+        emailSentIndicator.innerHTML = '<p style="margin-top: 15px; color: var(--success-color);"><i class="fas fa-check-circle"></i> Confirmation email sent successfully!</p>';
+        document.querySelector('.confirmation-box').appendChild(emailSentIndicator);
+    })
+    .catch(function(error) {
+        console.error('Error sending email:', error);
+        emailSendingIndicator.remove();
+        
+        const emailErrorIndicator = document.createElement('div');
+        emailErrorIndicator.innerHTML = '<p style="margin-top: 15px; color: var(--danger-color);"><i class="fas fa-exclamation-circle"></i> Could not send confirmation email. We\'ll contact you shortly.</p>';
+        document.querySelector('.confirmation-box').appendChild(emailErrorIndicator);
+    });
+}
+        
+        // Handle bank selection change
+        document.addEventListener('DOMContentLoaded', function() {
+            // Setup bank name selection
+            const bankNameSelect = document.getElementById('bankName');
+            if (bankNameSelect) {
+                bankNameSelect.addEventListener('change', function() {
+                    const otherBankField = document.getElementById('otherBankField');
+                    if (this.value === 'other') {
+                        otherBankField.style.display = 'block';
+                    } else {
+                        otherBankField.style.display = 'none';
+                    }
+                });
+            }
+            
+            // Format card number with spaces
+            const cardNumberInput = document.getElementById('cardNumber');
+            if (cardNumberInput) {
+                cardNumberInput.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+                    let formattedValue = '';
+                    for (let i = 0; i < value.length; i++) {
+                        if (i > 0 && i % 4 === 0) {
+                            formattedValue += ' ';
+                        }
+                        formattedValue += value[i];
+                    }
+                    e.target.value = formattedValue;
+                });
+            }
+            
+            // Format expiry date with slash
+            const expiryInput = document.getElementById('cardExpiry');
+            if (expiryInput) {
+                expiryInput.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\D/g, '');
+                    if (value.length > 2) {
+                        value = value.substring(0, 2) + '/' + value.substring(2, 4);
+                    }
+                    e.target.value = value;
+                });
+            }
+        });
+    </script>
+</body>
+</html>

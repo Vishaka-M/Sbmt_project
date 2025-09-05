@@ -1,0 +1,2892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shri Balaji Mini Transport - Owner Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #1a237e;
+            --secondary-color: #f9a826;
+            --bg-color: #f5f5f5;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --border-color: #e0e0e0;
+            --success-color: #4caf50;
+            --warning-color: #ff9800;
+            --danger-color: #f44336;
+            --info-color: #2196f3;
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #303f9f;
+            --secondary-color: #ffa000;
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-color: #f5f5f5;
+            --border-color: #333333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            transition: all 0.3s;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 15px;
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.2rem;
+            line-height: 1.2;
+        }
+
+        .sidebar-header p {
+            font-size: 0.8rem;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        .sidebar-menu {
+            padding: 0 10px;
+        }
+
+        .menu-item {
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-bottom: 5px;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .menu-item i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .menu-item:hover, .menu-item.active {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .menu-item.active {
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 8px;
+            right: 10px;
+            background-color: var(--danger-color);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 20px;
+            transition: all 0.3s;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        /* Dashboard Stats */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stat-card .icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .stat-card .details {
+            text-align: right;
+        }
+
+        .stat-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .stat-card p {
+            font-size: 0.9rem;
+            color: #777;
+        }
+
+        .bg-orange {
+            background-color: var(--secondary-color);
+        }
+
+        .bg-blue {
+            background-color: var(--info-color);
+        }
+
+        .bg-green {
+            background-color: var(--success-color);
+        }
+
+        .bg-red {
+            background-color: var(--danger-color);
+        }
+
+        /* Charts & Tables */
+        .charts-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 15px;
+        }
+
+        .card-header h2 {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th, table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        table th {
+            background-color: rgba(0, 0, 0, 0.03);
+            font-weight: 600;
+        }
+
+        table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Status Badges */
+        .badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        .badge-success {
+            background-color: rgba(76, 175, 80, 0.1);
+            color: var(--success-color);
+        }
+
+        .badge-warning {
+            background-color: rgba(255, 152, 0, 0.1);
+            color: var(--warning-color);
+        }
+
+        .badge-danger {
+            background-color: rgba(244, 67, 54, 0.1);
+            color: var(--danger-color);
+        }
+
+        .badge-info {
+            background-color: rgba(33, 150, 243, 0.1);
+            color: var(--info-color);
+        }
+
+        /* Approval Requests */
+        .request-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .request-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+            border-left: 4px solid var(--info-color);
+        }
+
+        .request-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .request-card.new {
+            border-left: 4px solid var(--danger-color);
+        }
+
+        .request-info h3 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+
+        .request-info p {
+            font-size: 0.85rem;
+            color: #777;
+            margin-bottom: 3px;
+        }
+
+        .request-actions button {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            margin-left: 5px;
+        }
+
+        .btn-approve {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .btn-reject {
+            background-color: #f5f5f5;
+            color: var(--text-color);
+        }
+
+        .btn-approve:hover {
+            background-color: #43a047;
+        }
+
+        .btn-reject:hover {
+            background-color: #e0e0e0;
+        }
+
+        /* Action buttons */
+        .action-btn {
+            padding: 6px 10px;
+            border: none;
+            border-radius: 4px;
+            background-color: #f5f5f5;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-right: 5px;
+        }
+
+        .action-btn:hover {
+            background-color: #e0e0e0;
+        }
+
+        .action-btn.view {
+            color: var(--info-color);
+        }
+
+        .action-btn.edit {
+            color: var(--warning-color);
+        }
+
+        .action-btn.delete {
+            color: var(--danger-color);
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .charts-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 80px;
+                padding: 15px 0;
+            }
+            
+            .sidebar-header h2 {
+                display: none;
+            }
+            
+            .sidebar-header p {
+                display: none;
+            }
+            
+            .menu-item span {
+                display: none;
+            }
+            
+            .menu-item i {
+                margin-right: 0;
+                font-size: 1.2rem;
+            }
+            
+            .main-content {
+                margin-left: 80px;
+            }
+        }
+
+        /* Tabbed Content */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            color: var(--text-color);
+            white-space: nowrap;
+        }
+
+        .tab-btn.active {
+            border-bottom-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            transition: all 0.3s;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(26, 35, 126, 0.1);
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #151b60;
+        }
+
+        .btn-secondary {
+            background-color: #f5f5f5;
+            color: var(--text-color);
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            width: 100%;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            position: relative;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 15px;
+        }
+
+        .modal-header h2 {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #777;
+        }
+
+        .close-modal:hover {
+            color: var(--text-color);
+        }
+
+        .modal-body {
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+            margin-top: 15px;
+        }
+
+        .modal-footer button {
+            margin-left: 10px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        @media (max-width: 576px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Driver selection */
+        .driver-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .driver-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+
+        .driver-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .driver-card.selected {
+            border-color: var(--success-color);
+        }
+
+        .driver-card img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        .driver-info h3 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+
+        .driver-info p {
+            font-size: 0.85rem;
+            color: #777;
+            margin-bottom: 3px;
+        }
+
+        .vehicle-info {
+            background-color: rgba(0, 0, 0, 0.03);
+            padding: 8px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-size: 0.85rem;
+        }
+
+        /* Alert notifications */
+        .alert {
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        .alert-success {
+            background-color: rgba(76, 175, 80, 0.1);
+            border: 1px solid var(--success-color);
+            color: var(--success-color);
+        }
+
+        .alert-danger {
+            background-color: rgba(244, 67, 54, 0.1);
+            border: 1px solid var(--danger-color);
+            color: var(--danger-color);
+        }
+
+        /* Theme options */
+        .theme-options {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .theme-option {
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .theme-option.active {
+            border-color: var(--secondary-color);
+        }
+
+        .theme-light {
+            background-color: #f5f5f5;
+        }
+
+        .theme-dark {
+            background-color: #121212;
+        }
+
+        .theme-blue {
+            background-color: #e3f2fd;
+        }
+
+        /* Invoice styles */
+        .invoice-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .invoice-to {
+            margin-bottom: 20px;
+        }
+
+        .invoice-total {
+            margin-top: 20px;
+            text-align: right;
+        }
+
+        .invoice-actions {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        /* Loading spinner */
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+            display: none;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Status timeline */
+        .timeline {
+            position: relative;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 2px;
+            background-color: var(--border-color);
+            top: 0;
+            bottom: 0;
+            left: 25px;
+        }
+
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: var(--card-bg);
+            border: 2px solid var(--primary-color);
+            left: 16px;
+            top: 15px;
+            z-index: 1;
+        }
+
+        .timeline-item.active::after {
+            background-color: var(--primary-color);
+        }
+
+        .timeline-content {
+            background-color: var(--card-bg);
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .timeline-content h3 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+
+        .timeline-content p {
+            font-size: 0.85rem;
+            color: #777;
+            margin-bottom: 0;
+        }
+
+        /* Filter controls */
+        .filter-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .filter-control {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        /* Report styles */
+        .report-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .report-header h2 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .report-header p {
+            color: #777;
+        }
+
+        .report-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .summary-item {
+            background-color: var(--card-bg);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+
+        .summary-item h3 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .summary-item p {
+            color: #777;
+            font-size: 0.9rem;
+        }
+
+        /* Order Status Update Buttons */
+        .status-actions {
+            display: flex;
+            gap: 5px;
+            margin-top: 5px;
+        }
+
+        .status-btn {
+            padding: 4px 8px;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .status-btn-transit {
+            background-color: var(--warning-color);
+            color: white;
+        }
+
+        .status-btn-delivered {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        /* No matching drivers message */
+        .no-matching-drivers {
+            text-align: center;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.03);
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+        
+        /* Vehicle type highlight */
+        .vehicle-type-highlight {
+            background-color: rgba(33, 150, 243, 0.1);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: 500;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>Shri Balaji Mini Transport</h2>
+                <p>Owner Portal</p>
+            </div>
+            <div class="sidebar-menu">
+                <a href="#" class="menu-item active" data-tab="dashboard">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="menu-item" data-tab="requests">
+                    <i class="fas fa-clipboard-check"></i>
+                    <span>Pending Requests</span>
+                    <div class="notification-badge">0</div>
+                </a>
+                <a href="#" class="menu-item" data-tab="orders">
+                    <i class="fas fa-truck"></i>
+                    <span>Order Management</span>
+                </a>
+                <a href="#" class="menu-item" data-tab="clients">
+                    <i class="fas fa-users"></i>
+                    <span>Client Management</span>
+                </a>
+                <a href="#" class="menu-item" data-tab="drivers">
+                    <i class="fas fa-id-card"></i>
+                    <span>Drivers & Vehicles</span>
+                </a>
+                <a href="#" class="menu-item" data-tab="reports">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Reports</span>
+                </a>
+                <a href="#" class="menu-item" data-tab="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+                <a href="#" class="menu-item" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <h1>Welcome, Marri Yadaiah</h1>
+                <div class="user-info">
+                    <img src="/api/placeholder/100/100" alt="Owner Profile">
+                    <span>Owner</span>
+                </div>
+            </div>
+
+            <!-- Alert Notifications -->
+            <div class="alert alert-success" id="successAlert">
+                Operation completed successfully!
+            </div>
+            <div class="alert alert-danger" id="errorAlert">
+                An error occurred. Please try again.
+            </div>
+
+            <!-- Loading spinner -->
+            <div class="spinner" id="loadingSpinner"></div>
+
+            <!-- Dashboard Tab -->
+            <div class="tab-content active" id="dashboard">
+                <!-- Stats Cards -->
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="icon bg-orange">
+                            <i class="fas fa-clipboard-list"></i>
+                        </div>
+                        <div class="details">
+                            <h3>0</h3>
+                            <p>Pending Requests</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon bg-blue">
+                            <i class="fas fa-truck"></i>
+                        </div>
+                        <div class="details">
+                            <h3>0</h3>
+                            <p>Active Shipments</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon bg-green">
+                            <i class="fas fa-rupee-sign"></i>
+                        </div>
+                        <div class="details">
+                            <h3>₹0</h3>
+                            <p>Weekly Revenue</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon bg-red">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="details">
+                            <h3>0</h3>
+                            <p>Total Clients</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts -->
+                <div class="charts-container">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Revenue Overview</h2>
+                            <select id="revenueTimeframe" class="form-control" style="width: 120px;" aria-label="Revenue timeframe">
+                                <option value="weekly">Weekly</option>
+                                <option value="monthly">Monthly</option>
+                                <option value="yearly">Yearly</option>
+                            </select>
+                        </div>
+                        <canvas id="revenueChart" height="250"></canvas>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Shipment Status</h2>
+                        </div>
+                        <canvas id="shipmentChart" height="250"></canvas>
+                    </div>
+                </div>
+
+                <!-- Recent Orders -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Recent Orders</h2>
+                        <button class="btn btn-primary" onclick="showTab('orders')">View All</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Customer</th>
+                                    <th>From</th>
+                                    <th>To</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Recent orders will be populated here dynamically -->
+                                <tr>
+                                    <td colspan="7" style="text-align: center; padding: 20px;">
+                                        <i class="fas fa-info-circle"></i> No orders found
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pending Requests Tab -->
+            <div class="tab-content" id="requests">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Pending Transport Requests</h2>
+                        <div>
+                            <button class="btn btn-secondary" onclick="toggleNewRequests()">
+                                <i class="fas fa-filter"></i> Show New Only
+                            </button>
+                        </div>
+                    </div>
+                    <div class="request-list">
+                        <!-- Pending requests will be loaded here dynamically -->
+                        <div style="text-align: center; padding: 50px 20px;">
+                            <i class="fas fa-clipboard-check" style="font-size: 48px; color: #ccc; margin-bottom: 15px;"></i>
+                            <h3>No Pending Requests</h3>
+                            <p>There are currently no new transport requests to process.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Orders Tab -->
+            <div class="tab-content" id="orders">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Order Management</h2>
+                        <div>
+                            <button class="btn btn-primary" onclick="showOrderModal()">Add New Order</button>
+                        </div>
+                    </div>
+                    <div class="filter-controls">
+                        <div class="filter-control">
+                            <input type="text" class="form-control" placeholder="Search orders..." id="orderSearchInput">
+                        </div>
+                        <div class="filter-control">
+                            <select class="form-control" id="orderStatusFilter">
+                                <option value="all">All Statuses</option>
+                                <option value="pending">Pending</option>
+                                <option value="assigned">Assigned</option>
+                                <option value="transit">In Transit</option>
+                                <option value="delivered">Delivered</option>
+                            </select>
+                        </div>
+                        <div class="filter-control">
+                            <select class="form-control" id="orderDateFilter">
+                                <option value="all">All Dates</option>
+                                <option value="today">Today</option>
+                                <option value="week">This Week</option>
+                                <option value="month">This Month</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Customer</th>
+                                    <th>From</th>
+                                    <th>To</th>
+                                    <th>Amount</th>
+                                    <th>Payment</th>
+                                    <th>Driver</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Orders will be loaded here dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Clients Tab -->
+            <div class="tab-content" id="clients">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Client Management</h2>
+                        <div>
+                            <button class="btn btn-primary" onclick="showClientModal()">Add New Client</button>
+                        </div>
+                    </div>
+                    <div class="filter-controls">
+                        <div class="filter-control">
+                            <input type="text" class="form-control" placeholder="Search clients..." id="clientSearchInput">
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Client ID</th>
+                                    <th>Name</th>
+                                    <th>Contact</th>
+                                    <th>Email</th>
+                                    <th>Location</th>
+                                    <th>Total Orders</th>
+                                    <th>Last Order</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Client data will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Drivers & Vehicles Tab -->
+            <div class="tab-content" id="drivers">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Drivers & Vehicles</h2>
+                        <div>
+                            <button class="btn btn-primary" onclick="showDriverModal()">Add New Driver</button>
+                            <button class="btn btn-secondary" onclick="showVehicleModal()">Add New Vehicle</button>
+                        </div>
+                    </div>
+                    <div class="tabs">
+                        <button class="tab-btn active" data-drivertab="available">Available</button>
+                        <button class="tab-btn" data-drivertab="intransit">In Transit</button>
+                        <button class="tab-btn" data-drivertab="maintenance">Under Maintenance</button>
+                        <button class="tab-btn" data-drivertab="all">All</button>
+                    </div>
+                    <div class="driver-list" id="driverListContainer">
+                        <!-- Drivers will be loaded here dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reports Tab -->
+            <div class="tab-content" id="reports">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Weekly Reports</h2>
+                        <div>
+                            <button class="btn btn-primary" onclick="generateWeeklyReport()">Generate New Report</button>
+                            <button class="btn btn-secondary" onclick="exportReport('pdf')">Export as PDF</button>
+                            <button class="btn btn-secondary" onclick="exportReport('excel')">Export as Excel</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Initial state with no reports -->
+                    <div class="report-list" id="noReportsMessage">
+                        <div style="text-align: center; padding: 50px 20px;">
+                            <i class="fas fa-file-alt" style="font-size: 48px; color: #ccc; margin-bottom: 15px;"></i>
+                            <h3>No Reports Generated Yet</h3>
+                            <p>Generate your first weekly report to view detailed statistics on orders, revenue, and commission.</p>
+                            <button class="btn btn-primary" style="margin-top: 15px;" onclick="generateWeeklyReport()">Generate First Report</button>
+                        </div>
+                    </div>
+                    
+                    <!-- This div will be hidden initially and shown after generating the first report -->
+                    <div class="report-list" id="reportListContent" style="display: none;">
+                        <!-- Report content will be generated here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div class="tab-content" id="settings">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Portal Settings</h2>
+                    </div>
+                    <div class="card-body">
+                        <h3>Theme Options</h3>
+                        <p>Choose your preferred theme for the portal:</p>
+                        <div class="theme-options">
+                            <div class="theme-option theme-light active" onclick="changeTheme('light')"></div>
+                            <div class="theme-option theme-dark" onclick="changeTheme('dark')"></div>
+                            <div class="theme-option theme-blue" onclick="changeTheme('blue')"></div>
+                        </div>
+                        
+                        <hr style="margin: 20px 0;">
+                        
+                        <h3>Notification Settings</h3>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" checked> Email notifications for new orders
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" checked> SMS notifications for new orders
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" checked> Email notifications for order status changes
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" checked> Daily summary reports via email
+                            </label>
+                        </div>
+                        
+                        <hr style="margin: 20px 0;">
+                        
+                        <h3>Account Settings</h3>
+                        <div class="form-group">
+                            <label for="ownerEmail">Email Address</label>
+                            <input type="email" class="form-control" id="ownerEmail" value="marri.yadaiah@gmail.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="ownerPhone">Phone Number</label>
+                            <input type="tel" class="form-control" id="ownerPhone" value="9876543200">
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-primary" onclick="updateAccountSettings()">Save Changes</button>
+                            <button class="btn btn-secondary" onclick="changePassword()">Change Password</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modals -->
+        <!-- Driver Assignment Modal -->
+        <div class="modal" id="assignmentModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Assign Driver & Vehicle</h2>
+                    <button class="close-modal" onclick="closeModal('assignmentModal')">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="orderIdAssign">Order ID</label>
+                        <input type="text" class="form-control" id="orderIdAssign" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="customerNameAssign">Customer</label>
+                        <input type="text" class="form-control" id="customerNameAssign" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="routeAssign">Route</label>
+                        <input type="text" class="form-control" id="routeAssign" readonly>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Requested Vehicle Type</label>
+                        <div class="vehicle-type-highlight" id="vehicleTypeAssign">LCV (25 Tons)</div>
+                    </div>
+                    
+                    <h3>Available Matching Drivers</h3>
+                    <div class="driver-list">
+                        <!-- Available drivers with matching vehicle type will be loaded here -->
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="commissionAmount">Commission Amount (₹)</label>
+                        <input type="number" class="form-control" id="commissionAmount">
+                    </div>
+                    
+                    <!-- Hidden field to store selected driver ID -->
+                    <input type="hidden" id="selectedDriverId">
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" onclick="closeModal('assignmentModal')">Cancel</button>
+                    <button class="btn btn-primary" onclick="confirmAssignment()">Confirm Assignment</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Order Details Modal -->
+        <div class="modal" id="orderDetailsModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Order Details</h2>
+                    <button class="close-modal" onclick="closeModal('orderDetailsModal')">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>Order ID</label>
+                            <p id="orderIdDetails" class="form-control"></p>
+                        </div>
+                        <div class="form-group">
+                            <label>Date</label>
+                            <p id="orderDateDetails" class="form-control"></p>
+                        </div>
+                    </div>
+                    
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>Customer</label>
+                            <p id="customerNameDetails" class="form-control"></p>
+                        </div>
+                        <div class="form-group">
+                            <label>Contact</label>
+                            <p id="customerContactDetails" class="form-control"></p>
+                        </div>
+                    </div>
+                    
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>From</label>
+                            <p id="fromAddressDetails" class="form-control"></p>
+                        </div>
+                        <div class="form-group">
+                            <label>To</label>
+                            <p id="toAddressDetails" class="form-control"></p>
+                        </div>
+                    </div>
+                    
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>Vehicle Type</label>
+                            <p id="vehicleTypeDetails" class="form-control"></p>
+                        </div>
+                        <div class="form-group">
+                            <label>Material</label>
+                            <p id="materialTypeDetails" class="form-control"></p>
+                        </div>
+                    </div>
+                    
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>Amount</label>
+                            <p id="amountDetails" class="form-control"></p>
+                        </div>
+                        <div class="form-group">
+                            <label>Payment Status</label>
+                            <p id="paymentStatusDetails" class="form-control"></p>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Status</label>
+                        <p id="statusDetails" class="form-control"></p>
+                    </div>
+                    
+                    <div id="driverInfoSection" style="display: none;">
+                        <hr style="margin: 20px 0;">
+                        <h3>Assigned Driver Information</h3>
+                        
+                        <div class="grid-2">
+                            <div class="form-group">
+                                <label>Driver Name</label>
+                                <p id="driverNameDetails" class="form-control"></p>
+                            </div>
+                            <div class="form-group">
+                                <label>Vehicle Number</label>
+                                <p id="vehicleNumberDetails" class="form-control"></p>
+                            </div>
+                        </div>
+                        
+                        <div id="deliveryInfoSection" style="display: none;">
+                            <div class="form-group">
+                                <label>Delivered On</label>
+                                <p id="deliveredDateDetails" class="form-control"></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Status update buttons (shown based on current status) -->
+                    <div id="statusUpdateButtons" class="form-group" style="margin-top: 20px;">
+                        <!-- Buttons will be added dynamically based on current status -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" onclick="closeModal('orderDetailsModal')">Close</button>
+                    <button class="btn btn-primary" onclick="editOrder(document.getElementById('orderIdDetails').textContent)">Edit Order</button>
+                    <button class="btn btn-secondary" onclick="printOrderDetails()">Print</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Change Password Modal -->
+        <div class="modal" id="changePasswordModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Change Password</h2>
+                    <button class="close-modal" onclick="closeModal('changePasswordModal')">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="currentPassword">Current Password</label>
+                        <input type="password" class="form-control" id="currentPassword">
+                    </div>
+                    <div class="form-group">
+                        <label for="newPassword">New Password</label>
+                        <input type="password" class="form-control" id="newPassword">
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm New Password</label>
+                        <input type="password" class="form-control" id="confirmPassword">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" onclick="closeModal('changePasswordModal')">Cancel</button>
+                    <button class="btn btn-primary" onclick="updatePassword()">Update Password</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Order Status Update Modal -->
+        <div class="modal" id="statusUpdateModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Update Order Status</h2>
+                    <button class="close-modal" onclick="closeModal('statusUpdateModal')">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="orderIdStatus">Order ID</label>
+                        <input type="text" class="form-control" id="orderIdStatus" readonly>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="currentStatus">Current Status</label>
+                        <input type="text" class="form-control" id="currentStatus" readonly>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="newStatus">New Status</label>
+                        <select class="form-control" id="newStatus">
+                            <option value="Assigned">Assigned</option>
+                            <option value="In Transit">In Transit</option>
+                            <option value="Delivered">Delivered</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group" id="deliveryDateGroup" style="display: none;">
+                        <label for="deliveryDate">Delivery Date</label>
+                        <input type="date" class="form-control" id="deliveryDate">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="statusUpdateNotes">Additional Notes</label>
+                        <textarea class="form-control" id="statusUpdateNotes" rows="3" placeholder="Add any notes about this status update (optional)"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="notifyCustomer" checked> 
+                            Notify customer about status update
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" onclick="closeModal('statusUpdateModal')">Cancel</button>
+                    <button class="btn btn-primary" onclick="saveStatusUpdate()">Update Status</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- JavaScript -->
+    <script>
+        // Initialize database with sample drivers
+        function initializeDriverDatabase() {
+            // Sample drivers data with different vehicle types
+            const driversData = [
+                {
+                    id: 'D001',
+                    name: 'Sunil Verma',
+                    phone: '9876543201',
+                    licenseNumber: 'DL9876543201',
+                    status: 'available',
+                    vehicleType: 'LCV',
+                    vehicleCapacity: '25',
+                    vehicleNumber: 'TN-01-AB-1234',
+                    photo: '/api/placeholder/100/100'
+                },
+                {
+                    id: 'D002',
+                    name: 'Rajesh Kumar',
+                    phone: '9876543202',
+                    licenseNumber: 'DL9876543202',
+                    status: 'available',
+                    vehicleType: 'HCV',
+                    vehicleCapacity: '50',
+                    vehicleNumber: 'KA-02-CD-5678',
+                    photo: '/api/placeholder/100/100'
+                },
+                {
+                    id: 'D003',
+                    name: 'Mahesh Singh',
+                    phone: '9876543203',
+                    licenseNumber: 'DL9876543203',
+                    status: 'available',
+                    vehicleType: 'container',
+                    vehicleCapacity: '75',
+                    vehicleNumber: 'AP-03-EF-9012',
+                    photo: '/api/placeholder/100/100'
+                },
+                {
+                    id: 'D004',
+                    name: 'Karthik Reddy',
+                    phone: '9876543204',
+                    licenseNumber: 'DL9876543204',
+                    status: 'available',
+                    vehicleType: 'ODC',
+                    vehicleCapacity: '100',
+                    vehicleNumber: 'TG-04-GH-3456',
+                    photo: '/api/placeholder/100/100'
+                },
+                {
+                    id: 'D005',
+                    name: 'Vijay Sharma',
+                    phone: '9876543205',
+                    licenseNumber: 'DL9876543205',
+                    status: 'available',
+                    vehicleType: 'trailer',
+                    vehicleCapacity: '100',
+                    vehicleNumber: 'MH-05-IJ-7890',
+                    photo: '/api/placeholder/100/100'
+                },
+                {
+                    id: 'D006',
+                    name: 'Ravi Patel',
+                    phone: '9876543206',
+                    licenseNumber: 'DL9876543206',
+                    status: 'available',
+                    vehicleType: 'LCV',
+                    vehicleCapacity: '50',
+                    vehicleNumber: 'KA-06-KL-1234',
+                    photo: '/api/placeholder/100/100'
+                }
+            ];
+
+            // Save to localStorage if not already saved
+            if (!localStorage.getItem('driversData')) {
+                localStorage.setItem('driversData', JSON.stringify(driversData));
+            }
+        }
+
+        // Initialize function to set up event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize driver database
+            initializeDriverDatabase();
+            
+            // Set up tab switching
+            setUpTabSwitching();
+            
+            // Initialize charts
+            initializeCharts();
+            
+            // Load data
+            loadPendingRequests();
+            updateRecentOrders();
+            populateOrdersTable();
+            populateDriverList();
+            
+            // Set up status update modal
+            document.getElementById('newStatus').addEventListener('change', function() {
+                if (this.value === 'Delivered') {
+                    document.getElementById('deliveryDateGroup').style.display = 'block';
+                } else {
+                    document.getElementById('deliveryDateGroup').style.display = 'none';
+                }
+            });
+        });
+
+        // Initialize charts
+        function initializeCharts() {
+            // Revenue Chart
+            const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+            const revenueChart = new Chart(revenueCtx, {
+                type: 'line',
+                data: {
+                    labels: ['01 Mar', '02 Mar', '03 Mar', '04 Mar', '05 Mar', '06 Mar', '07 Mar'],
+                    datasets: [{
+                        label: 'Revenue',
+                        data: [42500, 58200, 72300, 65800, 54200, 48700, 43500],
+                        borderColor: '#1a237e',
+                        backgroundColor: 'rgba(26, 35, 126, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return '₹' + value;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Shipment Status Chart
+            const shipmentCtx = document.getElementById('shipmentChart').getContext('2d');
+            const shipmentChart = new Chart(shipmentCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Pending', 'Assigned', 'In Transit', 'Delivered'],
+                    datasets: [{
+                        data: [24, 38, 62, 32],
+                        backgroundColor: ['#f44336', '#2196f3', '#ff9800', '#4caf50'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    },
+                    cutout: '70%'
+                }
+            });
+        }
+
+        // Set up tab switching
+        function setUpTabSwitching() {
+            const menuItems = document.querySelectorAll('.menu-item');
+            menuItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const tabId = this.getAttribute('data-tab');
+                    if (tabId) {
+                        showTab(tabId);
+                    }
+                });
+            });
+        }
+
+        function showTab(tabId) {
+            // Hide all tabs
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab
+            const selectedTab = document.getElementById(tabId);
+            if (selectedTab) {
+                selectedTab.classList.add('active');
+            }
+            
+            // Update active menu item
+            const menuItems = document.querySelectorAll('.menu-item');
+            menuItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('data-tab') === tabId) {
+                    item.classList.add('active');
+                }
+            });
+
+            // Update data based on the selected tab
+            if (tabId === 'dashboard') {
+                updateRecentOrders();
+            } else if (tabId === 'requests') {
+                loadPendingRequests();
+            } else if (tabId === 'orders') {
+                populateOrdersTable();
+            }
+        }
+
+        // Modal functions
+        function showModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Helper function to format payment status text
+        function getPaymentText(paymentStatus) {
+            switch(paymentStatus) {
+                case 'to-pay':
+                    return 'To Pay (Cash on Delivery)';
+                case 'paid':
+                    return 'Paid';
+                case 'credit':
+                    return 'Credit (Payment Pending)';
+                default:
+                    return paymentStatus || 'Not specified';
+            }
+        }
+
+        // Populate driver list in Drivers tab
+        function populateDriverList() {
+            // Get drivers data
+            const drivers = JSON.parse(localStorage.getItem('driversData') || '[]');
+            
+            // Get the driver list container
+            const driverListContainer = document.getElementById('driverListContainer');
+            
+            // Clear existing content
+            driverListContainer.innerHTML = '';
+            
+            // Check if there are any drivers
+            if (drivers.length === 0) {
+                driverListContainer.innerHTML = `
+                    <div style="text-align: center; padding: 50px 20px;">
+                        <i class="fas fa-id-card" style="font-size: 48px; color: #ccc; margin-bottom: 15px;"></i>
+                        <h3>No Drivers Found</h3>
+                        <p>You haven't added any drivers yet.</p>
+                        <button class="btn btn-primary" style="margin-top: 15px;" onclick="showDriverModal()">Add First Driver</button>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Loop through drivers and create driver cards
+            drivers.forEach(driver => {
+                const driverCard = document.createElement('div');
+                driverCard.className = 'driver-card';
+                driverCard.setAttribute('data-status', driver.status);
+                
+                // Determine badge class based on status
+                let badgeClass = 'badge-success';
+                let statusText = 'Available';
+                
+                if (driver.status === 'assigned') {
+                    badgeClass = 'badge-info';
+                    statusText = 'Assigned';
+                } else if (driver.status === 'intransit') {
+                    badgeClass = 'badge-warning';
+                    statusText = 'In Transit';
+                } else if (driver.status === 'maintenance') {
+                    badgeClass = 'badge-danger';
+                    statusText = 'Under Maintenance';
+                }
+                
+                driverCard.innerHTML = `
+                    <div class="driver-card-header">
+                        <img src="${driver.photo}" alt="Driver">
+                        <div class="driver-info">
+                            <h3>${driver.name}</h3>
+                            <p><i class="fas fa-phone"></i> ${driver.phone}</p>
+                            <p><i class="fas fa-id-card"></i> ${driver.licenseNumber}</p>
+                            <span class="badge ${badgeClass}">${statusText}</span>
+                        </div>
+                    </div>
+                    <div class="vehicle-info">
+                        <p><strong>Vehicle:</strong> ${driver.vehicleType} (${driver.vehicleNumber})</p>
+                        <p><strong>Capacity:</strong> ${driver.vehicleCapacity} Tons</p>
+                    </div>
+                `;
+                
+                driverListContainer.appendChild(driverCard);
+            });
+        }
+
+        // Load pending requests
+        function loadPendingRequests() {
+            // Get orders from localStorage
+            const orders = JSON.parse(localStorage.getItem('transportOrders') || '[]');
+            
+            // Sort orders by timestamp (newest first)
+            const sortedOrders = orders.sort((a, b) => b.timestamp - a.timestamp);
+            
+            // Get the request list container
+            const requestList = document.querySelector('.request-list');
+            
+            // Clear existing content
+            requestList.innerHTML = '';
+            
+            // Check if there are any orders
+            if (sortedOrders.length === 0) {
+                requestList.innerHTML = `
+                    <div style="text-align: center; padding: 50px 20px;">
+                        <i class="fas fa-clipboard-check" style="font-size: 48px; color: #ccc; margin-bottom: 15px;"></i>
+                        <h3>No Pending Requests</h3>
+                        <p>There are currently no new transport requests to process.</p>
+                    </div>
+                `;
+                
+                // Update notification badge
+                const notificationBadge = document.querySelector('.notification-badge');
+                if (notificationBadge) {
+                    notificationBadge.textContent = '0';
+                }
+                
+                return;
+            }
+            
+            // Update notification badge
+            const notificationBadge = document.querySelector('.notification-badge');
+            if (notificationBadge) {
+                notificationBadge.textContent = sortedOrders.length;
+            }
+            
+            // Loop through orders and create request cards
+            sortedOrders.forEach(order => {
+                const isNewOrder = (new Date().getTime() - order.timestamp) < 24 * 60 * 60 * 1000; // Within 24 hours
+                
+                const requestCard = document.createElement('div');
+                requestCard.className = `request-card ${isNewOrder ? 'new' : ''}`;
+                
+                // Format company name display
+                const companyDisplay = order.companyName ? 
+                    `${order.customerName} <span style="font-size: 0.9em;">(${order.companyName})</span>` : 
+                    order.customerName;
+                
+                // Format amount with commas
+                const formattedAmount = new Intl.NumberFormat('en-IN', {
+                    style: 'currency',
+                    currency: 'INR',
+                    maximumFractionDigits: 0
+                }).format(order.amount);
+                
+                requestCard.innerHTML = `
+                    <div class="request-info">
+                        <h3>${order.vehicleType} Transport Request #${order.shipmentId}</h3>
+                        <p><strong>Client:</strong> ${companyDisplay} ${isNewOrder ? '<span class="badge badge-danger">New Client</span>' : ''}</p>
+                        <p><strong>Route:</strong> ${order.fromAddress} to ${order.toAddress}</p>
+                        <p><strong>Date:</strong> ${order.orderDate} | <strong>Amount:</strong> ${formattedAmount}</p>
+                        <p><strong>Material:</strong> ${order.materialType} | <strong>Vehicle:</strong> ${order.vehicleType} (${order.vehicleCapacity} Tons)</p>
+                    </div>
+                    <div class="request-actions">
+                        <button class="btn-approve" onclick="showAssignmentModal('${order.shipmentId}')">Approve & Assign</button>
+                        <button class="btn-reject" onclick="rejectRequest('${order.shipmentId}')">Reject</button>
+                    </div>
+                `;
+                
+                requestList.appendChild(requestCard);
+            });
+            
+            // Update dashboard stats
+            updateDashboardStats();
+        }
+
+        // Update dashboard recent orders
+        function updateRecentOrders() {
+            // Get approved orders
+            const approvedOrders = JSON.parse(localStorage.getItem('approvedOrders') || '[]');
+            // Get pending orders
+            const pendingOrders = JSON.parse(localStorage.getItem('transportOrders') || '[]');
+            
+            // Combine and sort all orders by timestamp (newest first)
+            const allOrders = [...approvedOrders, ...pendingOrders].sort((a, b) => b.timestamp - a.timestamp);
+            
+            // Get the recent orders table body
+            const recentOrdersTableBody = document.querySelector('#dashboard .table-responsive tbody');
+            
+            // Clear existing content
+            recentOrdersTableBody.innerHTML = '';
+            
+            // Check if there are any orders
+            if (allOrders.length === 0) {
+                const noOrdersRow = document.createElement('tr');
+                noOrdersRow.innerHTML = `
+                    <td colspan="7" style="text-align: center; padding: 20px;">
+                        <i class="fas fa-info-circle"></i> No orders found
+                    </td>
+                `;
+                recentOrdersTableBody.appendChild(noOrdersRow);
+                return;
+            }
+            
+            // Get only the most recent 4 orders
+            const recentOrders = allOrders.slice(0, 4);
+            
+            // Loop through orders and create table rows
+            recentOrders.forEach(order => {
+                const row = document.createElement('tr');
+                
+                // Determine badge class based on status
+                let badgeClass = 'badge-danger';
+                if (order.status === 'Assigned') badgeClass = 'badge-info';
+                if (order.status === 'In Transit') badgeClass = 'badge-warning';
+                if (order.status === 'Delivered') badgeClass = 'badge-success';
+                
+                // Format amount with commas
+                const formattedAmount = new Intl.NumberFormat('en-IN', {
+                    style: 'currency',
+                    currency: 'INR',
+                    maximumFractionDigits: 0
+                }).format(order.amount);
+                
+                row.innerHTML = `
+                    <td>${order.shipmentId}</td>
+                    <td>${order.customerName}</td>
+                    <td>${order.fromAddress}</td>
+                    <td>${order.toAddress}</td>
+                    <td>${formattedAmount}</td>
+                    <td><span class="badge ${badgeClass}">${order.status || 'Pending'}</span></td>
+                    <td>${order.orderDate}</td>
+                `;
+                
+                recentOrdersTableBody.appendChild(row);
+            });
+            
+            // Update dashboard stats
+            updateDashboardStats();
+        }
+
+        // Update dashboard statistics
+        function updateDashboardStats() {
+            // Get approved orders
+            const approvedOrders = JSON.parse(localStorage.getItem('approvedOrders') || '[]');
+            // Get pending orders
+            const pendingOrders = JSON.parse(localStorage.getItem('transportOrders') || '[]');
+            
+            // Combine all orders
+            const allOrders = [...approvedOrders, ...pendingOrders];
+            
+            // Calculate stats
+            const pendingCount = pendingOrders.length;
+            const activeShipments = approvedOrders.filter(order => order.status === 'Assigned' || order.status === 'In Transit').length;
+            
+            // Calculate weekly revenue (orders from last 7 days)
+            const oneWeekAgo = new Date();
+            oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+            
+            const weeklyRevenue = allOrders
+                .filter(order => new Date(order.timestamp) >= oneWeekAgo)
+                .reduce((total, order) => total + order.amount, 0);
+            
+            // Calculate unique clients
+            const uniqueClients = new Set(allOrders.map(order => order.customerEmail)).size;
+            
+            // Update UI
+            const statsCards = document.querySelectorAll('.stat-card .details h3');
+            if (statsCards.length >= 4) {
+                statsCards[0].textContent = pendingCount;
+                statsCards[1].textContent = activeShipments;
+                statsCards[2].textContent = '₹' + weeklyRevenue.toLocaleString();
+                statsCards[3].textContent = uniqueClients;
+            }
+        }
+
+        // Populate orders table in Orders tab
+        function populateOrdersTable() {
+            // Get approved orders
+            const approvedOrders = JSON.parse(localStorage.getItem('approvedOrders') || '[]');
+            // Get pending orders
+            const pendingOrders = JSON.parse(localStorage.getItem('transportOrders') || '[]');
+            
+            // Combine and sort all orders by timestamp (newest first)
+            const allOrders = [...approvedOrders, ...pendingOrders].sort((a, b) => b.timestamp - a.timestamp);
+            
+            // Get the orders table body
+            const ordersTableBody = document.querySelector('#orders .table-responsive tbody');
+            
+            // Clear existing content
+            ordersTableBody.innerHTML = '';
+            
+            // Check if there are any orders
+            if (allOrders.length === 0) {
+                const noOrdersRow = document.createElement('tr');
+                noOrdersRow.innerHTML = `
+                    <td colspan="10" style="text-align: center; padding: 20px;">
+                        <i class="fas fa-info-circle"></i> No orders found
+                    </td>
+                `;
+                ordersTableBody.appendChild(noOrdersRow);
+                return;
+            }
+            
+            // Loop through orders and create table rows
+            allOrders.forEach(order => {
+                const row = document.createElement('tr');
+                
+                // Determine badge class based on status
+                let badgeClass = 'badge-danger';
+                let statusText = order.status || 'Pending';
+                
+                if (statusText === 'Assigned') badgeClass = 'badge-info';
+                if (statusText === 'In Transit') badgeClass = 'badge-warning';
+                if (statusText === 'Delivered') badgeClass = 'badge-success';
+                
+                // Format amount with commas
+                const formattedAmount = new Intl.NumberFormat('en-IN', {
+                    style: 'currency',
+                    currency: 'INR',
+                    maximumFractionDigits: 0
+                }).format(order.amount);
+                
+                // Create status action buttons based on current status
+                let statusActions = '';
+                
+                if (statusText === 'Assigned') {
+                    statusActions = `
+                        <div class="status-actions">
+                            <button class="status-btn status-btn-transit" onclick="updateOrderStatus('${order.shipmentId}', 'In Transit')">
+                                <i class="fas fa-truck"></i> Mark In Transit
+                            </button>
+                        </div>
+                    `;
+                } else if (statusText === 'In Transit') {
+                    statusActions = `
+                        <div class="status-actions">
+                            <button class="status-btn status-btn-delivered" onclick="updateOrderStatus('${order.shipmentId}', 'Delivered')">
+                                <i class="fas fa-check-circle"></i> Mark Delivered
+                            </button>
+                        </div>
+                    `;
+                }
+                
+                row.innerHTML = `
+                    <td>${order.shipmentId}</td>
+                    <td>${order.customerName}</td>
+                    <td>${order.fromAddress}</td>
+                    <td>${order.toAddress}</td>
+                    <td>${formattedAmount}</td>
+                    <td>${getPaymentText(order.paymentStatus)}</td>
+                    <td>${order.assignedDriver || '-'}</td>
+                    <td>
+                        <span class="badge ${badgeClass}">${statusText}</span>
+                        ${statusActions}
+                    </td>
+                    <td>${order.orderDate}</td>
+                    <td>
+                        <button class="action-btn view" onclick="viewOrderDetails('${order.shipmentId}')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="action-btn edit" onclick="editOrder('${order.shipmentId}')">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn delete" onclick="deleteOrder('${order.shipmentId}')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                
+                ordersTableBody.appendChild(row);
+            });
+        }
+
+        // Driver assignment - show modal with only matching vehicle type drivers
+        function showAssignmentModal(orderId) {
+            // Get the order data
+            const orders = JSON.parse(localStorage.getItem('transportOrders') || '[]');
+            const order = orders.find(o => o.shipmentId === orderId);
+            
+            if (!order) {
+                alert('Order not found!');
+                return;
+            }
+            
+            // Set values in the modal
+            document.getElementById('orderIdAssign').value = orderId;
+            document.getElementById('customerNameAssign').value = order.customerName;
+            document.getElementById('routeAssign').value = `${order.fromAddress} to ${order.toAddress}`;
+            document.getElementById('vehicleTypeAssign').textContent = `${order.vehicleType} (${order.vehicleCapacity} Tons)`;
+            
+            // Calculate suggested commission (2% of order amount)
+            const suggestedCommission = Math.round(order.amount * 0.02);
+            document.getElementById('commissionAmount').value = suggestedCommission;
+            
+            // Get drivers that match the vehicle type
+            const drivers = JSON.parse(localStorage.getItem('driversData') || '[]');
+            const matchingDrivers = drivers.filter(
+                driver => driver.status === 'available' && 
+                driver.vehicleType === order.vehicleType
+            );
+            
+            // Get the driver list container
+            const driverListContainer = document.querySelector('#assignmentModal .driver-list');
+            
+            // Clear existing content
+            driverListContainer.innerHTML = '';
+            
+            // Check if there are matching drivers
+            if (matchingDrivers.length === 0) {
+                driverListContainer.innerHTML = `
+                    <div class="no-matching-drivers">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <p>No available drivers found for ${order.vehicleType} vehicles.</p>
+                        <button class="btn btn-secondary" onclick="showDriverModal()">Add New Driver</button>
+                    </div>
+                `;
+            } else {
+                // Add matching drivers to the list
+                matchingDrivers.forEach(driver => {
+                    const driverCard = document.createElement('div');
+                    driverCard.className = 'driver-card';
+                    driverCard.setAttribute('data-driver-id', driver.id);
+                    driverCard.onclick = function() { selectDriver(this, driver.id); };
+                    
+                    driverCard.innerHTML = `
+                        <div class="driver-card-header">
+                            <img src="${driver.photo}" alt="Driver">
+                            <div class="driver-info">
+                                <h3>${driver.name}</h3>
+                                <p><i class="fas fa-phone"></i> ${driver.phone}</p>
+                                <p><i class="fas fa-id-card"></i> ${driver.licenseNumber}</p>
+                                <span class="badge badge-success">Available</span>
+                            </div>
+                        </div>
+                        <div class="vehicle-info">
+                            <p><strong>Vehicle:</strong> ${driver.vehicleType} (${driver.vehicleNumber})</p>
+                            <p><strong>Capacity:</strong> ${driver.vehicleCapacity} Tons</p>
+                        </div>
+                    `;
+                    
+                    driverListContainer.appendChild(driverCard);
+                });
+            }
+            
+            // Reset driver selection
+            document.getElementById('selectedDriverId').value = '';
+            
+            // Show modal
+            showModal('assignmentModal');
+        }
+
+        // Select driver for assignment
+        function selectDriver(card, driverId) {
+            // Remove selection from all cards
+            const driverCards = document.querySelectorAll('.driver-list .driver-card');
+            driverCards.forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Add selection to clicked card
+            card.classList.add('selected');
+            
+            // Store selected driver ID
+            document.getElementById('selectedDriverId').value = driverId;
+        }
+
+        // Confirm driver assignment
+        function confirmAssignment() {
+            // Get selected driver ID
+            const selectedDriverId = document.getElementById('selectedDriverId').value;
+            
+            if (!selectedDriverId) {
+                alert('Please select a driver');
+                return;
+            }
+            
+            const commissionAmount = document.getElementById('commissionAmount').value;
+            
+            if (!commissionAmount) {
+                alert('Please enter commission amount');
+                return;
+            }
+            
+            const orderId = document.getElementById('orderIdAssign').value;
+            
+            // Get driver data
+            const drivers = JSON.parse(localStorage.getItem('driversData') || '[]');
+            const selectedDriver = drivers.find(driver => driver.id === selectedDriverId);
+            
+            if (!selectedDriver) {
+                alert('Selected driver not found');
+                return;
+            }
+            
+            // Close modal
+            closeModal('assignmentModal');
+            
+            // Show loading spinner
+            document.getElementById('loadingSpinner').style.display = 'block';
+            
+            // Simulate server request
+            setTimeout(() => {
+                // Approve and assign the order
+                const success = approveAndAssignOrder(orderId, selectedDriver, commissionAmount);
+                
+                // Update driver status
+                updateDriverStatus(selectedDriverId, 'assigned');
+                
+                // Hide loading spinner
+                document.getElementById('loadingSpinner').style.display = 'none';
+                
+                if (success) {
+                    // Show success message
+                    document.getElementById('successAlert').textContent = `Driver ${selectedDriver.name} assigned successfully!`;
+                    document.getElementById('successAlert').style.display = 'block';
+                    
+                    // Send email confirmation to customer
+                    setTimeout(() => {
+                        document.getElementById('successAlert').textContent = 'Email confirmation sent to customer!';
+                    }, 2000);
+                    
+                    // Hide success message after delay
+                    setTimeout(() => {
+                        document.getElementById('successAlert').style.display = 'none';
+                    }, 4000);
+                } else {
+                    // Show error message
+                    document.getElementById('errorAlert').textContent = 'Error assigning driver. Please try again.';
+                    document.getElementById('errorAlert').style.display = 'block';
+                    
+                    // Hide error message after delay
+                    setTimeout(() => {
+                        document.getElementById('errorAlert').style.display = 'none';
+                    }, 3000);
+                }
+            }, 1500);
+        }
+
+        // Update driver status
+        function updateDriverStatus(driverId, newStatus) {
+            // Get drivers data
+            let drivers = JSON.parse(localStorage.getItem('driversData') || '[]');
+            
+            // Find the driver
+            const driverIndex = drivers.findIndex(driver => driver.id === driverId);
+            
+            if (driverIndex !== -1) {
+                // Update driver status
+                drivers[driverIndex].status = newStatus;
+                
+                // Save back to localStorage
+                localStorage.setItem('driversData', JSON.stringify(drivers));
+                
+                // Refresh driver list
+                populateDriverList();
+                
+                return true;
+            }
+            
+            return false;
+        }
+
+        // Approve order and assign driver
+        function approveAndAssignOrder(orderId, driver, commission) {
+            // Get orders from localStorage
+            let orders = JSON.parse(localStorage.getItem('transportOrders') || '[]');
+            
+            // Find the order
+            const orderIndex = orders.findIndex(order => order.shipmentId === orderId);
+            
+            if (orderIndex !== -1) {
+                // Remove the order from pending list
+                const approvedOrder = orders.splice(orderIndex, 1)[0];
+                
+                // Update the order status and driver info
+                approvedOrder.status = 'Assigned';
+                approvedOrder.assignedDriver = driver.name;
+                approvedOrder.assignedDriverId = driver.id;
+                approvedOrder.assignedVehicle = driver.vehicleNumber;
+                approvedOrder.assignmentDate = new Date().toLocaleDateString('en-IN', {
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric'
+                });
+                approvedOrder.commission = parseFloat(commission);
+                
+                // Get existing approved orders or initialize empty array
+                let approvedOrders = JSON.parse(localStorage.getItem('approvedOrders') || '[]');
+                
+                // Add to approved orders
+                approvedOrders.push(approvedOrder);
+                
+                // Save back to localStorage
+                localStorage.setItem('transportOrders', JSON.stringify(orders));
+                localStorage.setItem('approvedOrders', JSON.stringify(approvedOrders));
+                
+                // Refresh the UI
+                loadPendingRequests();
+                updateRecentOrders();
+                populateOrdersTable();
+                
+                return true;
+            }
+            
+            return false;
+        }
+
+        // Update order status
+        function updateOrderStatus(orderId, newStatus) {
+            if (confirm(`Are you sure you want to mark this order as "${newStatus}"?`)) {
+                // Get approved orders
+                let approvedOrders = JSON.parse(localStorage.getItem('approvedOrders') || '[]');
+                
+                // Find the order
+                const orderIndex = approvedOrders.findIndex(order => order.shipmentId === orderId);
+                
+                if (orderIndex !== -1) {
+                    // Update order status
+                    approvedOrders[orderIndex].status = newStatus;
+                    
+                    // Update driver status if order is in transit
+                    if (newStatus === 'In Transit' && approvedOrders[orderIndex].assignedDriverId) {
+                        updateDriverStatus(approvedOrders[orderIndex].assignedDriverId, 'intransit');
+                    }
+                    
+                    // If marking as delivered, update completion date and driver status
+                    if (newStatus === 'Delivered') {
+                        approvedOrders[orderIndex].deliveredDate = new Date().toLocaleDateString('en-IN', {
+                            day: '2-digit',
+                            month: 'short',
+                            year: 'numeric'
+                        });
+                        
+                        // Make driver available again
+                        if (approvedOrders[orderIndex].assignedDriverId) {
+                            updateDriverStatus(approvedOrders[orderIndex].assignedDriverId, 'available');
+                        }
+                    }
+                    
+                    // Save back to localStorage
+                    localStorage.setItem('approvedOrders', JSON.stringify(approvedOrders));
+                    
+                    // Show loading spinner
+                    document.getElementById('loadingSpinner').style.display = 'block';
+                    
+                    // Simulate server request
+                    setTimeout(() => {
+                        // Hide loading spinner
+                        document.getElementById('loadingSpinner').style.display = 'none';
+                        
+                        // Show success message
+                        document.getElementById('successAlert').textContent = `Order status updated to "${newStatus}" successfully!`;
+                        document.getElementById('successAlert').style.display = 'block';
+                        
+                        // If delivered, show additional message about notifying customer
+                        if (newStatus === 'Delivered') {
+                            setTimeout(() => {
+                                document.getElementById('successAlert').textContent = 'Delivery confirmation sent to customer!';
+                            }, 2000);
+                        }
+                        
+                        // Hide success message after delay
+                        setTimeout(() => {
+                            document.getElementById('successAlert').style.display = 'none';
+                        }, 4000);
+                        
+                        // Refresh the UI
+                        updateRecentOrders();
+                        populateOrdersTable();
+                        
+                        // If we're viewing the order details, refresh the modal
+                        const orderDetailsModal = document.getElementById('orderDetailsModal');
+                        if (orderDetailsModal.style.display === 'block') {
+                            viewOrderDetails(orderId);
+                        }
+                    }, 1500);
+                }
+            }
+        }
+
+        // View order details
+        function viewOrderDetails(orderId) {
+            // Get all orders (both pending and approved)
+            const pendingOrders = JSON.parse(localStorage.getItem('transportOrders') || '[]');
+            const approvedOrders = JSON.parse(localStorage.getItem('approvedOrders') || '[]');
+            const allOrders = [...pendingOrders, ...approvedOrders];
+            
+            // Find the order
+            const order = allOrders.find(o => o.shipmentId === orderId);
+            
+            if (!order) {
+                alert('Order not found!');
+                return;
+            }
+            
+            // Set values in the modal
+            document.getElementById('orderIdDetails').textContent = order.shipmentId;
+            document.getElementById('orderDateDetails').textContent = order.orderDate;
+            document.getElementById('customerNameDetails').textContent = order.customerName;
+            document.getElementById('customerContactDetails').textContent = order.customerPhone;
+            document.getElementById('fromAddressDetails').textContent = order.fromAddress;
+            document.getElementById('toAddressDetails').textContent = order.toAddress;
+            document.getElementById('vehicleTypeDetails').textContent = `${order.vehicleType} (${order.vehicleCapacity} Tons)`;
+            document.getElementById('materialTypeDetails').textContent = order.materialType;
+            
+            // Format amount with commas
+            const formattedAmount = new Intl.NumberFormat('en-IN', {
+                style: 'currency',
+                currency: 'INR',
+                maximumFractionDigits: 0
+            }).format(order.amount);
+            
+            document.getElementById('amountDetails').textContent = formattedAmount;
+            
+            // Payment status
+            let paymentText = getPaymentText(order.paymentStatus);
+            document.getElementById('paymentStatusDetails').textContent = paymentText;
+            
+            // Order status
+            document.getElementById('statusDetails').textContent = order.status || 'Pending';
+            
+            // Driver info section
+            const driverInfoSection = document.getElementById('driverInfoSection');
+            if (order.assignedDriver) {
+                driverInfoSection.style.display = 'block';
+                document.getElementById('driverNameDetails').textContent = order.assignedDriver;
+                document.getElementById('vehicleNumberDetails').textContent = order.assignedVehicle;
+                
+                // Delivery info section
+                const deliveryInfoSection = document.getElementById('deliveryInfoSection');
+                if (order.status === 'Delivered' && order.deliveredDate) {
+                    deliveryInfoSection.style.display = 'block';
+                    document.getElementById('deliveredDateDetails').textContent = order.deliveredDate;
+                } else {
+                    deliveryInfoSection.style.display = 'none';
+                }
+            } else {
+                driverInfoSection.style.display = 'none';
+            }
+            
+            // Status update buttons
+            const statusUpdateButtons = document.getElementById('statusUpdateButtons');
+            statusUpdateButtons.innerHTML = '';
+            
+            if (order.status === 'Assigned') {
+                statusUpdateButtons.innerHTML = `
+                    <button class="btn btn-warning" onclick="updateOrderStatus('${order.shipmentId}', 'In Transit')">
+                        <i class="fas fa-truck"></i> Mark as In Transit
+                    </button>
+                `;
+            } else if (order.status === 'In Transit') {
+                statusUpdateButtons.innerHTML = `
+                    <button class="btn btn-success" onclick="updateOrderStatus('${order.shipmentId}', 'Delivered')">
+                        <i class="fas fa-check-circle"></i> Mark as Delivered
+                    </button>
+                `;
+            }
+            
+            // Show modal
+            showModal('orderDetailsModal');
+        }
+
+        // Reject order
+        function rejectRequest(orderId) {
+            if (confirm('Are you sure you want to reject this request?')) {
+                // Get orders from localStorage
+                let orders = JSON.parse(localStorage.getItem('transportOrders') || '[]');
+                
+                // Find the order
+                const orderIndex = orders.findIndex(order => order.shipmentId === orderId);
+                
+                if (orderIndex !== -1) {
+                    // Remove the order
+                    orders.splice(orderIndex, 1);
+                    
+                    // Save back to localStorage
+                    localStorage.setItem('transportOrders', JSON.stringify(orders));
+                }
+                
+                // Show loading spinner
+                document.getElementById('loadingSpinner').style.display = 'block';
+                
+                // Simulate server request
+                setTimeout(() => {
+                    // Hide loading spinner
+                    document.getElementById('loadingSpinner').style.display = 'none';
+                    
+                    // Show success message
+                    document.getElementById('successAlert').textContent = 'Request rejected successfully!';
+                    document.getElementById('successAlert').style.display = 'block';
+                    
+                    // Hide success message after delay
+                    setTimeout(() => {
+                        document.getElementById('successAlert').style.display = 'none';
+                    }, 3000);
+                    
+                    // Refresh the UI
+                    loadPendingRequests();
+                    updateRecentOrders();
+                }, 1000);
+            }
+        }
+
+        // Edit order
+        function editOrder(orderId) {
+            alert('Edit order functionality would go here for order: ' + orderId);
+            // In a real application, you would show a form to edit the order
+        }
+
+        // Delete order
+        function deleteOrder(orderId) {
+            if (confirm('Are you sure you want to delete this order?')) {
+                // Get all orders (both pending and approved)
+                let pendingOrders = JSON.parse(localStorage.getItem('transportOrders') || '[]');
+                let approvedOrders = JSON.parse(localStorage.getItem('approvedOrders') || '[]');
+                
+                // Try to find and remove from pending orders
+                const pendingIndex = pendingOrders.findIndex(o => o.shipmentId === orderId);
+                if (pendingIndex !== -1) {
+                    pendingOrders.splice(pendingIndex, 1);
+                    localStorage.setItem('transportOrders', JSON.stringify(pendingOrders));
+                }
+                
+// Try to find and remove from approved orders
+const approvedIndex = approvedOrders.findIndex(o => o.shipmentId === orderId);
+                if (approvedIndex !== -1) {
+                    // If the order has an assigned driver, make them available again
+                    if (approvedOrders[approvedIndex].assignedDriverId) {
+                        updateDriverStatus(approvedOrders[approvedIndex].assignedDriverId, 'available');
+                    }
+                    
+                    approvedOrders.splice(approvedIndex, 1);
+                    localStorage.setItem('approvedOrders', JSON.stringify(approvedOrders));
+                }
+                
+                // Refresh the UI
+                loadPendingRequests();
+                updateRecentOrders();
+                populateOrdersTable();
+                
+                alert('Order deleted successfully!');
+            }
+        }
+
+        // Toggle new requests only
+        function toggleNewRequests() {
+            const requestCards = document.querySelectorAll('.request-card');
+            const showNewOnly = document.querySelector('.btn-secondary').classList.toggle('active');
+            
+            requestCards.forEach(card => {
+                if (showNewOnly && !card.classList.contains('new')) {
+                    card.style.display = 'none';
+                } else {
+                    card.style.display = 'flex';
+                }
+            });
+        }
+
+        // Driver tab switching
+        function setupDriverTabs() {
+            const driverTabBtns = document.querySelectorAll('[data-drivertab]');
+            driverTabBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Update active button
+                    driverTabBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Filter driver cards
+                    const status = this.getAttribute('data-drivertab');
+                    const driverCards = document.querySelectorAll('.driver-card');
+                    
+                    driverCards.forEach(card => {
+                        if (status === 'all' || card.getAttribute('data-status') === status) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        }
+
+        // Settings functions
+        function changeTheme(theme) {
+            document.body.setAttribute('data-theme', theme);
+            
+            // Update active theme in UI
+            const themeOptions = document.querySelectorAll('.theme-option');
+            themeOptions.forEach(option => {
+                option.classList.remove('active');
+                if (option.classList.contains('theme-' + theme)) {
+                    option.classList.add('active');
+                }
+            });
+        }
+
+        function updateAccountSettings() {
+            const email = document.getElementById('ownerEmail').value;
+            const phone = document.getElementById('ownerPhone').value;
+            
+            if (!email || !phone) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            // Show loading spinner
+            document.getElementById('loadingSpinner').style.display = 'block';
+            
+            // Simulate server request
+            setTimeout(() => {
+                // Hide loading spinner
+                document.getElementById('loadingSpinner').style.display = 'none';
+                
+                // Show success message
+                document.getElementById('successAlert').textContent = 'Account settings updated successfully!';
+                document.getElementById('successAlert').style.display = 'block';
+                
+                // Hide success message after delay
+                setTimeout(() => {
+                    document.getElementById('successAlert').style.display = 'none';
+                }, 3000);
+            }, 1000);
+        }
+
+        function changePassword() {
+            showModal('changePasswordModal');
+        }
+
+        function updatePassword() {
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (!currentPassword || !newPassword || !confirmPassword) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            if (newPassword !== confirmPassword) {
+                alert('New passwords do not match');
+                return;
+            }
+            
+            // Close modal
+            closeModal('changePasswordModal');
+            
+            // Show loading spinner
+            document.getElementById('loadingSpinner').style.display = 'block';
+            
+            // Simulate server request
+            setTimeout(() => {
+                // Hide loading spinner
+                document.getElementById('loadingSpinner').style.display = 'none';
+                
+                // Show success message
+                document.getElementById('successAlert').textContent = 'Password updated successfully!';
+                document.getElementById('successAlert').style.display = 'block';
+                
+                // Hide success message after delay
+                setTimeout(() => {
+                    document.getElementById('successAlert').style.display = 'none';
+                }, 3000);
+            }, 1000);
+        }
+
+        // Generate weekly report (placeholder)
+        function generateWeeklyReport() {
+            // Show loading spinner
+            document.getElementById('loadingSpinner').style.display = 'block';
+            
+            // Simulate report generation delay
+            setTimeout(function() {
+                // Hide loading spinner
+                document.getElementById('loadingSpinner').style.display = 'none';
+                
+                // Hide the "no reports" message
+                document.getElementById('noReportsMessage').style.display = 'none';
+                
+                // Show the report content
+                document.getElementById('reportListContent').style.display = 'block';
+                
+                // Generate report content
+                document.getElementById('reportListContent').innerHTML = `
+                    <div class="card">
+                        <div class="report-header">
+                            <h2>Weekly Report: 01 Mar - 07 Mar 2025</h2>
+                            <p>Generated on: ${new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</p>
+                        </div>
+                        <div class="report-summary">
+                            <div class="summary-item">
+                                <h3>${Math.floor(Math.random() * 10) + 30}</h3>
+                                <p>Total Orders</p>
+                            </div>
+                            <div class="summary-item">
+                                <h3>₹${(Math.floor(Math.random() * 100000) + 300000).toLocaleString()}</h3>
+                                <p>Total Revenue</p>
+                            </div>
+                            <div class="summary-item">
+                                <h3>₹${(Math.floor(Math.random() * 10000) + 50000).toLocaleString()}</h3>
+                                <p>Total Commission</p>
+                            </div>
+                            <div class="summary-item">
+                                <h3>${Math.floor(Math.random() * 5) + 5}</h3>
+                                <p>New Clients</p>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Orders</th>
+                                        <th>Revenue</th>
+                                        <th>Commission</th>
+                                        <th>Expenses</th>
+                                        <th>Net Profit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>01 Mar 2025</td>
+                                        <td>5</td>
+                                        <td>₹42,500</td>
+                                        <td>₹8,500</td>
+                                        <td>₹12,800</td>
+                                        <td>₹21,200</td>
+                                    </tr>
+                                    <tr>
+                                        <td>02 Mar 2025</td>
+                                        <td>6</td>
+                                        <td>₹58,200</td>
+                                        <td>₹11,640</td>
+                                        <td>₹15,400</td>
+                                        <td>₹31,160</td>
+                                    </tr>
+                                    <tr>
+                                        <td>03 Mar 2025</td>
+                                        <td>8</td>
+                                        <td>₹72,300</td>
+                                        <td>₹14,460</td>
+                                        <td>₹18,600</td>
+                                        <td>₹39,240</td>
+                                    </tr>
+                                    <tr>
+                                        <td>04 Mar 2025</td>
+                                        <td>7</td>
+                                        <td>₹65,800</td>
+                                        <td>₹13,160</td>
+                                        <td>₹16,900</td>
+                                        <td>₹35,740</td>
+                                    </tr>
+                                    <tr>
+                                        <td>05 Mar 2025</td>
+                                        <td>6</td>
+                                        <td>₹54,200</td>
+                                        <td>₹10,840</td>
+                                        <td>₹14,600</td>
+                                        <td>₹28,760</td>
+                                    </tr>
+                                    <tr>
+                                        <td>06 Mar 2025</td>
+                                        <td>5</td>
+                                        <td>₹48,700</td>
+                                        <td>₹9,740</td>
+                                        <td>₹13,200</td>
+                                        <td>₹25,760</td>
+                                    </tr>
+                                    <tr>
+                                        <td>07 Mar 2025</td>
+                                        <td>5</td>
+                                        <td>₹43,500</td>
+                                        <td>₹8,700</td>
+                                        <td>₹12,900</td>
+                                        <td>₹21,900</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+                
+                // Show success alert
+                document.getElementById('successAlert').textContent = 'Weekly report generated successfully!';
+                document.getElementById('successAlert').style.display = 'block';
+                
+                // Hide success alert after 3 seconds
+                setTimeout(function() {
+                    document.getElementById('successAlert').style.display = 'none';
+                }, 3000);
+            }, 1500);
+        }
+
+        function exportReport(format) {
+            // Show loading spinner
+            document.getElementById('loadingSpinner').style.display = 'block';
+            
+            // Simulate export delay
+            setTimeout(function() {
+                // Hide loading spinner
+                document.getElementById('loadingSpinner').style.display = 'none';
+                
+                // Show success alert
+                document.getElementById('successAlert').textContent = 'Report exported successfully as ' + format.toUpperCase() + '!';
+                document.getElementById('successAlert').style.display = 'block';
+                
+                // Hide success alert after 3 seconds
+                setTimeout(function() {
+                    document.getElementById('successAlert').style.display = 'none';
+                }, 3000);
+            }, 1000);
+        }
+
+        // Placeholder functions for modals
+        function showOrderModal() {
+            alert('Add New Order modal would open here');
+        }
+
+        function showClientModal() {
+            alert('Add New Client modal would open here');
+        }
+
+        function showDriverModal() {
+            alert('Add New Driver modal would open here');
+        }
+
+        function showVehicleModal() {
+            alert('Add New Vehicle modal would open here');
+        }
+
+        // Print order details
+        function printOrderDetails() {
+            window.print();
+        }
+
+        // Logout function
+        document.getElementById('logoutBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            if (confirm('Are you sure you want to logout?')) {
+                // Show loading spinner
+                document.getElementById('loadingSpinner').style.display = 'block';
+                
+                // Simulate logout
+                setTimeout(() => {
+                    // In a real application, this would redirect to the login page
+                    window.location.href = 'customer.html';
+                }, 1000);
+            }
+        });
+    </script>
+</body>
+</html>
+                                    
